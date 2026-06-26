@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { siteConfig } from "./config";
 import Waveform from "./Waveform";
-import { ChevronDown, LucideIcon, X, Sparkles, Play } from 'lucide-react'; // <-- Ícones novos adicionados aqui
+import { ChevronDown, LucideIcon, X, Sparkles, Play } from 'lucide-react'; 
 import Formulario from './Formulario';
 
 export default function Home() {
-  const { hero, marquee, videoSection, comparison, videoGallery, howItWorks, portfolio, testimonials, faq, social, finalCta, stats, pricingPlans, contact } = siteConfig;
+  const { hero, marquee, videoSection, comparison, videoGallery, howItWorks, portfolio, testimonials, faq, finalCta, stats, pricingPlans, contact } = siteConfig;
   
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -40,7 +40,7 @@ export default function Home() {
       {/* RENDERIZA O FORMULÁRIO */}
       {selectedPlan && <Formulario plan={selectedPlan} onClose={() => setSelectedPlan(null)} />}
       
-      {/* 1. HERO SECTION (Mantida idêntica) */}
+      {/* 1. HERO SECTION */}
       <section className="relative w-full py-16 md:py-24 px-4 flex flex-col items-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square rounded-full border border-[#D4AF37]/10"></div>
@@ -89,7 +89,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3. NOVA SEÇÃO: COMPARATIVO (Design Editorial e Emocional) */}
+      {/* 3. COMPARATIVO (Design Editorial e Emocional) */}
       <section className="py-24 px-4 bg-[#FFF9F2] relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">{comparison.badge}</p>
@@ -98,7 +98,7 @@ export default function Home() {
           </h2>
 
           <div className="flex flex-col md:flex-row gap-8 items-stretch justify-center">
-            {/* O Lado Ruim (Presentes Comuns) - Visual apagado e efêmero */}
+            {/* O Lado Ruim (Presentes Comuns) */}
             <div className="flex-1 bg-[#F5EBE1]/50 border border-[#4A151C]/5 rounded-3xl p-10 text-left opacity-80 hover:opacity-100 transition-opacity">
               <h3 className="text-[#5A151C]/50 font-bold uppercase tracking-widest text-sm mb-8 border-b border-[#4A151C]/10 pb-4">
                 {comparison.bad.title}
@@ -113,7 +113,7 @@ export default function Home() {
               </ul>
             </div>
 
-            {/* O Lado Bom (A Música) - Visual premium, destacado e vivo */}
+            {/* O Lado Bom (A Música) */}
             <div className="flex-1 bg-white border-2 border-[#D4AF37]/40 rounded-3xl p-10 text-left shadow-[0_0_30px_rgba(212,175,55,0.1)] relative transform md:-translate-y-4">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-[#3A1015] text-xs font-bold uppercase tracking-widest py-2 px-6 rounded-full shadow-md flex items-center gap-2">
                 <Sparkles className="w-4 h-4" /> {comparison.good.badge}
@@ -140,7 +140,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. NOVA SEÇÃO: GALERIA DE VÍDEOS */}
+      {/* 4. GALERIA DE VÍDEOS */}
       <section className="bg-[#1A050A] py-24 px-4 relative z-10 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -154,14 +154,14 @@ export default function Home() {
               <div key={item.id} className="relative aspect-[9/16] rounded-2xl overflow-hidden group border border-white/10 bg-black shadow-2xl">
                 <img src={item.thumbUrl} alt={item.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
                 
-                {/* Play Button centralizado */}
+                {/* Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 transform group-hover:scale-110 transition-transform duration-300 cursor-pointer">
                     <Play className="w-6 h-6 text-white ml-1" fill="white" />
                   </div>
                 </div>
 
-                {/* Player real de vídeo escondido que sobrepõe ao interagir (pode ser ajustado) */}
+                {/* Player de vídeo */}
                 <video controls preload="none" poster={item.thumbUrl} className="absolute inset-0 w-full h-full object-cover opacity-0 hover:opacity-100 z-10 transition-opacity duration-300">
                   <source src={item.videoUrl} type="video/mp4" />
                 </video>
@@ -305,32 +305,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. INSTAGRAM */}
-      <section className="py-24 px-4 bg-[#FFF9F2] border-t border-[#D4AF37]/10 text-center relative z-10">
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-          <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">{social.badge}</p>
-          <h2 className="text-4xl md:text-5xl font-serif text-[#3A1015] mb-4">
-            {social.title} <span className="text-[#D4AF37] italic">{social.titleHighlight}</span>
-          </h2>
-          <p className="text-[#5A151C]/70 text-lg mb-12 font-light">{social.subtitle}</p>
-          
-          <a href={contact.instagram} target="_blank" rel="noopener noreferrer" className="relative group inline-block">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#FFDC80] via-[#FD1D1D] to-[#833AB4] rounded-3xl blur-md opacity-40 group-hover:opacity-70 transition-opacity duration-300"></div>
-            <div className="relative bg-gradient-to-tr from-[#FFDC80] via-[#FD1D1D] to-[#833AB4] p-5 rounded-3xl shadow-xl transform group-hover:scale-105 transition-transform duration-300">
-               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
-            </div>
-          </a>
-        </div>
-      </section>
-
-      {/* 11. FOOTER */}
+      {/* 10. FOOTER (LIMPO - SEM INSTAGRAM) */}
       <footer className="bg-[#1A050A] text-[#FFF9F2]/60 pt-16 pb-8 px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
           <div className="text-2xl font-serif font-bold text-[#FFF9F2]">
             Música <span className="text-[#D4AF37] italic font-medium mx-1">de</span> Presente
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium">
-            <a href={contact.instagram} target="_blank" className="hover:text-[#D4AF37] transition-colors">Instagram</a>
             <a href={contact.whatsapp} target="_blank" className="hover:text-[#D4AF37] transition-colors">WhatsApp</a>
             <a href="#como-funciona" className="hover:text-[#D4AF37] transition-colors">Como funciona</a>
             <a href="#depoimentos" className="hover:text-[#D4AF37] transition-colors">Depoimentos</a>
