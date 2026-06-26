@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ShieldCheck, MessageCircle, Sparkles, Check, Wand2, Music, ArrowLeft, X } from 'lucide-react';
 import { siteConfig } from './config';
 
@@ -13,7 +13,6 @@ interface FormularioProps {
   onClose: () => void;
 }
 
-// Ordem otimizada para o mercado brasileiro
 const estilosPopulares = [
   'Sertanejo Romântico',
   'Sertanejo Universitário',
@@ -32,10 +31,30 @@ const adjetivosOpcoes = [
   'Dorminhoco(a)', 'Festeiro(a)', 'Comilão(ona)', 'Protetor(a)', 'Romântico(a)'
 ];
 
+// Lógica de Ramificação: As ocasiões mudam de acordo com o relacionamento escolhido
+const relacionamentos = [
+  'Meu Amor (Namorado/Esposo)', 
+  'Minha Mãe / Meu Pai', 
+  'Filho(a) ou Criança', 
+  'Um(a) Grande Amigo(a)', 
+  'Meu Pet 🐾', 
+  'Outra pessoa'
+];
+
+const ocasioesPorRelacao: Record<string, string[]> = {
+  'Meu Amor (Namorado/Esposo)': ['Aniversário', 'Aniversário de Namoro/Casamento', 'Pedido de Casamento', 'Pedido de Desculpas', 'Apenas para surpreender'],
+  'Minha Mãe / Meu Pai': ['Dia das Mães / Dia dos Pais', 'Aniversário', 'Bodas / Aniversário de Casamento', 'Homenagem (Saudade)', 'Apenas para surpreender'],
+  'Filho(a) ou Criança': ['Aniversário', 'Mesversário', 'Batizado', 'Formatura', 'Apenas para surpreender'],
+  'Um(a) Grande Amigo(a)': ['Aniversário', 'Homenagem de Amizade', 'Despedida / Viagem', 'Apenas para surpreender'],
+  'Meu Pet 🐾': ['Aniversário de Adoção', 'Aniversário', 'Homenagem (Saudade)', 'Apenas para surpreender'],
+  'Outra pessoa': ['Aniversário', 'Formatura', 'Homenagem (Saudade)', 'Apenas para surpreender', 'Outra ocasião']
+};
+
 export default function Formulario({ plan, onClose }: FormularioProps) {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [mostraOutro, setMostraOutro] = useState(false);
+  const [templateResumo, setTemplateResumo] = useState(0); // Guarda qual template de IA foi sorteado
   
   const [formData, setFormData] = useState({
     relacao: '',
@@ -51,10 +70,13 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  // Simula o tempo da IA gerando o resumo
+  // Simula a IA trabalhando e sorteia o texto
   const handleGerarResumo = () => {
     setIsGenerating(true);
     setStep(5);
+    // Sorteia um número de 0 a 2 para escolher o texto do resumo
+    setTemplateResumo(Math.floor(Math.random() * 3));
+    
     setTimeout(() => {
       setIsGenerating(false);
     }, 2000);
@@ -69,10 +91,47 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
     }));
   };
 
+  const adjetivosFormatados = formData.adjetivos.join(', ').replace(/, ([^,]*)$/, ' e $1');
+
+  // Renderiza o resumo com base no sorteio
+  const renderResumoIA = () => {
+    if (templateResumo === 0) {
+      return (
+        <p className="text-lg leading-relaxed text-[#4A2522]">
+          Vamos compor uma faixa <strong>{formData.estilo}</strong> perfeita para o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
+          <br/><br/>
+          A letra vai transparecer que {formData.nomePara} é uma pessoa <strong>{adjetivosFormatados}</strong>, sendo um presente inesquecível de <strong>{formData.nomeDe}</strong>. 
+          <br/><br/>
+          O refrão será inspirado neste momento único: <span className="italic text-gray-600">"{formData.historia}"</span>
+        </p>
+      );
+    } else if (templateResumo === 1) {
+      return (
+        <p className="text-lg leading-relaxed text-[#4A2522]">
+          A ideia central é criar um(a) <strong>{formData.estilo}</strong> emocionante de <strong>{formData.nomeDe}</strong> para <strong>{formData.nomePara}</strong>.
+          <br/><br/>
+          Para celebrar este(a) <strong>{formData.ocasiao}</strong>, a música vai destacar o lado <strong>{adjetivosFormatados}</strong> da personalidade.
+          <br/><br/>
+          Vamos transformar isso em poesia: <span className="italic text-gray-600">"{formData.historia}"</span>
+        </p>
+      );
+    } else {
+      return (
+        <p className="text-lg leading-relaxed text-[#4A2522]">
+          Nossa estrutura inicial focará na conexão entre <strong>{formData.nomeDe}</strong> e <strong>{formData.nomePara}</strong> através de um ritmo de <strong>{formData.estilo}</strong>.
+          <br/><br/>
+          A letra foi pensada para o(a) <strong>{formData.ocasiao}</strong>, enaltecendo características como <strong>{adjetivosFormatados}</strong>.
+          <br/><br/>
+          A cereja do bolo será este detalhe da história: <span className="italic text-gray-600">"{formData.historia}"</span>
+        </p>
+      );
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[#FFF9F5] text-[#4A2522] animate-in fade-in duration-300">
       
-      {/* BARRA SUPERIOR (Progresso e Fechar) */}
+      {/* BARRA SUPERIOR */}
       <div className="flex items-center justify-between p-6 max-w-5xl mx-auto w-full bg-white shadow-sm rounded-b-3xl">
         {step > 1 && step < 7 && (
           <button onClick={prevStep} className="text-[#611C24] hover:bg-[#FFF9F5] p-2 rounded-full transition-colors flex items-center gap-2 font-bold text-sm">
@@ -102,10 +161,13 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
             
             <h2 className="text-3xl md:text-5xl font-serif font-bold mb-8 text-[#611C24]">Para quem vamos fazer essa música? 🎵</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-              {['Meu Amor (Namorado/Esposo)', 'Minha Mãe / Meu Pai', 'Filho(a) ou Criança', 'Um(a) Grande Amigo(a)', 'Meu Pet 🐾', 'Outra pessoa'].map((opcao) => (
+              {relacionamentos.map((opcao) => (
                 <button
                   key={opcao}
-                  onClick={() => { setFormData({ ...formData, relacao: opcao }); nextStep(); }}
+                  onClick={() => { 
+                    setFormData({ ...formData, relacao: opcao, ocasiao: '' }); // Reseta a ocasião ao mudar a relação
+                    nextStep(); 
+                  }}
                   className="p-5 text-center bg-white border-2 border-gray-100 rounded-2xl hover:border-[#F0C05A] hover:bg-[#FFF9F5] transition-all text-lg font-bold text-[#4A2522] shadow-sm hover:shadow-md"
                 >
                   {opcao}
@@ -115,25 +177,25 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 2: NOMES E OCASIÃO */}
+        {/* PASSO 2: NOMES E OCASIÃO CONDICIONAL */}
         {step === 2 && (
           <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 w-full max-w-xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-[#611C24]">Quais são os nomes e o motivo?</h2>
             
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">Seu nome (De)</label>
+                <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">Seu nome ou apelido (De)</label>
                 <input
-                  autoFocus type="text" placeholder="Ex: Lucas..." value={formData.nomeDe}
+                  autoFocus type="text" placeholder="Ex: Henrique, Amor..." value={formData.nomeDe}
                   onChange={(e) => setFormData({ ...formData, nomeDe: e.target.value })}
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-xl font-medium transition-all"
                 />
               </div>
 
               <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">Nome de quem vai receber (Para)</label>
+                <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">Nome ou apelido de quem vai receber (Para)</label>
                 <input
-                  type="text" placeholder="Ex: Ana..." value={formData.nomePara}
+                  type="text" placeholder="Ex: Lilica, Vida..." value={formData.nomePara}
                   onChange={(e) => setFormData({ ...formData, nomePara: e.target.value })}
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-xl font-medium transition-all"
                 />
@@ -147,13 +209,10 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-xl font-medium transition-all"
                 >
                   <option value="">Selecione...</option>
-                  <option value="Aniversário">Aniversário</option>
-                  <option value="Aniversário de Casamento/Namoro">Aniversário de Casamento/Namoro</option>
-                  <option value="Dia das Mães/Pais">Dia das Mães/Pais</option>
-                  <option value="Pedido de Casamento">Pedido de Casamento</option>
-                  <option value="Pedido de Desculpas">Pedido de Desculpas</option>
-                  <option value="Homenagem Saudade">Homenagem (Saudade)</option>
-                  <option value="Apenas para surpreender">Apenas para surpreender (Sem data específica)</option>
+                  {/* Puxa a lista de ocasiões baseada na relação escolhida no Passo 1 */}
+                  {(ocasioesPorRelacao[formData.relacao] || ocasioesPorRelacao['Outra pessoa']).map((oc) => (
+                    <option key={oc} value={oc}>{oc}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -167,7 +226,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 3: A HISTÓRIA (Guiada e sem pressão) */}
+        {/* PASSO 3: A HISTÓRIA */}
         {step === 3 && (
           <div className="animate-in slide-in-from-bottom-4 fade-in duration-500">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-[#611C24]">A alma da música ❤️</h2>
@@ -272,20 +331,16 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                   <div className="absolute -top-4 left-6 bg-[#F0C05A] text-[#4A2522] text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> Estrutura da Letra
                   </div>
-                  <p className="text-lg leading-relaxed text-[#4A2522]">
-                    Uma música no estilo <strong>{formData.estilo}</strong> para celebrar o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
-                    <br/><br/>
-                    A letra será um presente de <strong>{formData.nomeDe}</strong> e vai destacar que {formData.nomePara} é uma pessoa <strong>{formData.adjetivos.join(', ').replace(/, ([^,]*)$/, ' e $1')}</strong>. 
-                    <br/><br/>
-                    A emoção principal da música vai girar em torno da seguinte história: <span className="italic text-gray-600">"{formData.historia}"</span>
-                  </p>
+                  
+                  {renderResumoIA()}
+
                 </div>
 
                 <button 
                   onClick={nextStep} 
                   className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-5 rounded-full text-xl transition-all shadow-[0_8px_30px_rgba(37,211,102,0.3)] flex items-center justify-center gap-2"
                 >
-                  Aprovar e ver valor final <Check className="w-5 h-5" />
+                  Ficou perfeito! Continuar <Check className="w-5 h-5" />
                 </button>
               </div>
             )}
@@ -339,7 +394,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
             <button 
               onClick={() => {
                 window.open(plan.checkoutUrl, '_blank');
-                nextStep(); // Vai para a tela de aguardando confirmação
+                nextStep(); 
               }}
               className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#0086C4] transition-transform transform hover:scale-105"
             >
