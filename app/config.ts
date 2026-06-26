@@ -20,7 +20,7 @@ export const siteConfig = {
         "Lyric Video (Fundo Padrão)",
         "Entrega em até 48h"
       ],
-      checkoutUrl: "https://mpago.li/2Lfnm4U" // Seu link atual de R$ 99
+      checkoutUrl: "https://mpago.li/2e26g4p" // Link R$ 99
     },
     {
       id: "lembranca",
@@ -34,7 +34,7 @@ export const siteConfig = {
         "Lyric Video com as suas Fotos no fundo",
         "Entrega em até 48h"
       ],
-      checkoutUrl: "https://mpago.la/COLOQUE_SEU_LINK_DE_179_AQUI" 
+      checkoutUrl: "https://mpago.li/2kPxs2u" // Link R$ 179
     },
     {
       id: "premium",
@@ -42,7 +42,7 @@ export const siteConfig = {
       price: "R$ 199",
       description: "A experiência mais luxuosa e completa.",
       badge: "Mais Escolhido",
-      highlight: true, // Isso faz o cartão ficar maior e dourado
+      highlight: true, 
       features: [
         "Música em Alta Qualidade (WAV Estúdio + MP3)",
         "Lyric Video com as suas Fotos no fundo",
@@ -50,7 +50,7 @@ export const siteConfig = {
         "Faixa Instrumental (Karaokê)",
         "Entrega em até 48h"
       ],
-      checkoutUrl: "https://mpago.la/COLOQUE_SEU_LINK_DE_199_AQUI"
+      checkoutUrl: "https://mpago.li/1RQ4ceC" // Link R$ 199
     }
   ],
 
