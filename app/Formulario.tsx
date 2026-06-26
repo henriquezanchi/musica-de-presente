@@ -9,6 +9,7 @@ interface FormularioProps {
     name: string;
     price: string;
     checkoutUrl: string;
+    features: string[]; // <-- Adicione esta linha
   };
   onClose: () => void;
 }
@@ -371,14 +372,32 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 7: CHECKOUT FINAL */}
+        {/* PASSO 7: CHECKOUT FINAL COM RESUMO E WHATSAPP */}
         {step === 7 && (
           <div className="animate-in zoom-in-95 fade-in duration-500 text-center max-w-xl mx-auto w-full">
             <h2 className="text-4xl font-serif font-bold mb-2 text-[#611C24]">Tudo pronto! ✨</h2>
-            <p className="text-gray-500 mb-8 font-medium">
-              Sua estrutura já foi salva. Conclua seu pagamento no ambiente seguro do Mercado Pago para iniciarmos a produção.
+            <p className="text-gray-500 mb-6 font-medium">
+              Sua estrutura já foi salva. Confira seu pacote e conclua o pagamento no ambiente seguro do Mercado Pago.
             </p>
 
+            {/* CAIXA DE RESUMO DO PEDIDO */}
+            <div className="bg-white border-2 border-gray-100 rounded-3xl p-6 text-left mb-6 shadow-sm">
+              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-4">
+                <h3 className="font-bold text-[#611C24] text-lg uppercase tracking-wider">Resumo do Pedido</h3>
+                <span className="font-bold text-2xl text-[#4A2522]">{plan.price}</span>
+              </div>
+              <div className="font-bold text-[#4A2522] text-xl mb-4">{plan.name}</div>
+              <ul className="space-y-3">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="flex items-start gap-3 text-[#4A2522]/80 font-medium">
+                    <Check className="w-5 h-5 text-[#E63946] flex-shrink-0 mt-0.5" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* GARANTIA */}
             <div className="bg-[#E8F5E9] border border-[#A5D6A7] rounded-3xl p-6 flex items-start gap-4 text-left mb-8 shadow-sm">
               <div className="bg-white p-2 rounded-full text-[#2E7D32] shadow-sm flex-shrink-0 mt-1">
                 <ShieldCheck className="w-6 h-6" />
@@ -391,16 +410,28 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               </div>
             </div>
             
+            {/* BOTÃO MERCADO PAGO */}
             <button 
               onClick={() => {
                 window.open(plan.checkoutUrl, '_blank');
                 nextStep(); 
               }}
-              className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#0086C4] transition-transform transform hover:scale-105"
+              className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#0086C4] transition-transform transform hover:scale-105 mb-6"
             >
               <span className="font-bold text-xl mb-1">Pagar {plan.price} no Mercado Pago</span>
               <span className="text-xs font-medium opacity-90 tracking-wide uppercase">PIX ou Cartão de Crédito</span>
             </button>
+
+            {/* WIDGET DE WHATSAPP IN-LINE */}
+            <a 
+              href={siteConfig.contact.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 text-gray-500 hover:text-[#25D366] font-bold transition-colors"
+            >
+              <MessageCircle className="w-6 h-6" />
+              Ficou alguma dúvida? Fale com a gente!
+            </a>
           </div>
         )}
 
