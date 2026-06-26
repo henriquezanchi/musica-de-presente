@@ -63,7 +63,7 @@ export const siteConfig = {
     badge: "Músicas feitas com carinho",
     title: "Transforme sua história em música",
     subtitle: "Uma música feita com a sua história — pra homenagear quem você ama de um jeito que nunca será esquecido.",
-    ctaText: "Ver os Planos",
+    ctaText: "Ver os Pacotes", // <-- Alterado de "Planos" para "Pacotes"
     tagline: "cada música, uma história que fica pra sempre",
   },
   marquee: [
@@ -94,6 +94,49 @@ export const siteConfig = {
       { id: 3, title: "Nata e Mela — Amor de cachorro", style: "Pop", icon: PawPrint, desc: "A história única de uma mulher e sua companheira de quatro patas. Porque todo amor merece uma música.", coverUrl: "https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&w=800&q=80", audioUrl: "/audios/nata-mela.mp3", durationText: "0:00 / 2:56" }
     ]
   },
+
+  // ... (mantenha o que já existe em cima)
+  
+  // NOVA SEÇÃO: COMPARAÇÃO
+  comparison: {
+    badge: "— POR QUE MÚSICA?",
+    title: "Por que uma música vale",
+    titleHighlight: "mais que mil presentes?",
+    bad: {
+      title: "Presentes Comuns",
+      items: [
+        "Roupas saem de moda ou rasgam",
+        "Perfumes acabam e o frasco vai pro lixo",
+        "Chocolates duram apenas alguns minutos",
+        "Jantares caros são esquecidos no dia seguinte"
+      ]
+    },
+    good: {
+      title: "Música Personalizada",
+      badge: "✦ INESQUECÍVEL",
+      items: [
+        { title: "Eterna", desc: "o arquivo fica pra sempre" },
+        { title: "Única", desc: "ninguém no mundo tem uma igual" },
+        { title: "Emocionante", desc: "toca direto na alma" },
+        { title: "Compartilhável", desc: "mostre pra família e amigos" }
+      ]
+    }
+  },
+
+  // NOVA SEÇÃO: GALERIA DE VÍDEOS
+  videoGallery: {
+    badge: "— O BÔNUS EM AÇÃO",
+    title: "A sua história em formato de clipe",
+    subtitle: "Todos os pacotes incluem a opção de lyric video sincronizado. Dê o play e sinta a emoção do que vamos entregar no seu WhatsApp.",
+    items: [
+      { id: 1, title: "História de Casamento", thumbUrl: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      { id: 2, title: "Homenagem Dia das Mães", thumbUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" },
+      { id: 3, title: "Pedido de Namoro", thumbUrl: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" }
+    ]
+  },
+
+  // ... (mantenha o resto do arquivo igual)
+
   testimonials: {
     badge: "— DEPOIMENTOS",
     title: "O que dizem quem já viveu isso",

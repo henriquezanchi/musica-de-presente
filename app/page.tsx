@@ -3,13 +3,12 @@
 import { useState } from 'react';
 import { siteConfig } from "./config";
 import Waveform from "./Waveform";
-import { ChevronDown, LucideIcon } from 'lucide-react';
+import { ChevronDown, LucideIcon, X, Sparkles, Play } from 'lucide-react'; // <-- Ícones novos adicionados aqui
 import Formulario from './Formulario';
 
 export default function Home() {
-  const { hero, marquee, videoSection, howItWorks, portfolio, testimonials, faq, social, finalCta, stats, pricingPlans, contact } = siteConfig;
+  const { hero, marquee, videoSection, comparison, videoGallery, howItWorks, portfolio, testimonials, faq, social, finalCta, stats, pricingPlans, contact } = siteConfig;
   
-  // O Estado agora guarda qual plano foi selecionado. Se for null, o formulário está fechado.
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -32,16 +31,16 @@ export default function Home() {
            <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer" className="hidden md:block text-[#5A151C]/70 hover:text-[#5A151C] text-sm font-medium transition-colors">
               Falar com a gente
            </a>
-           <a href="#planos" className="bg-[#3A1015] hover:bg-[#2A0B0F] text-[#FFF9F2] text-sm font-semibold py-2.5 px-6 rounded-full transition-all">
-              Ver os Planos
+           <a href="#pacotes" className="bg-[#3A1015] hover:bg-[#2A0B0F] text-[#FFF9F2] text-sm font-semibold py-2.5 px-6 rounded-full transition-all">
+              Ver os Pacotes
            </a>
         </div>
       </header>
 
-      {/* RENDERIZA O FORMULÁRIO SE UM PLANO FOR ESCOLHIDO */}
+      {/* RENDERIZA O FORMULÁRIO */}
       {selectedPlan && <Formulario plan={selectedPlan} onClose={() => setSelectedPlan(null)} />}
       
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO SECTION (Mantida idêntica) */}
       <section className="relative w-full py-16 md:py-24 px-4 flex flex-col items-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-40">
            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square rounded-full border border-[#D4AF37]/10"></div>
@@ -65,12 +64,12 @@ export default function Home() {
 
             <div className="flex flex-col items-center mb-6 bg-white/60 backdrop-blur-sm border border-[#D4AF37]/20 px-6 py-2.5 rounded-2xl shadow-sm">
               <div className="flex items-center gap-3">
-                <span className="text-2xl md:text-3xl font-serif font-bold text-[#3A1015]">Planos a partir de <span className="text-3xl md:text-4xl text-[#721C24]">R$ 99</span></span>
+                <span className="text-2xl md:text-3xl font-serif font-bold text-[#3A1015]">Pacotes a partir de <span className="text-3xl md:text-4xl text-[#721C24]">R$ 99</span></span>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
-                <a href="#planos" className="bg-[#3A1015] hover:bg-[#2A0B0F] text-[#FFF9F2] font-medium text-lg py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl">
+                <a href="#pacotes" className="bg-[#3A1015] hover:bg-[#2A0B0F] text-[#FFF9F2] font-medium text-lg py-4 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-xl">
                     {hero.ctaText}
                 </a>
             </div>
@@ -80,13 +79,6 @@ export default function Home() {
             <p className="text-base text-[#D4AF37] font-serif font-light leading-relaxed mb-12">
                 {hero.tagline}
             </p>
-
-            {showCounter && (
-              <div className="flex flex-col items-center mt-4">
-                <span className="text-6xl font-serif font-bold text-[#3A1015] leading-none mb-2">{displayCount}</span>
-                <span className="text-sm font-light text-[#5A151C]/70 tracking-wide uppercase">{counterText}</span>
-              </div>
-            )}
         </div>
       </section>
 
@@ -97,43 +89,93 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3. SEÇÃO DE PORTFÓLIO */}
-      <section className="bg-[#3A1015] py-24 px-4 relative z-10 border-t border-[#2A0B0F]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">— Ouça exemplos reais</p>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#FFF9F2] mb-4">{portfolio.title}</h2>
-            <p className="text-[#FFF9F2]/70 text-lg max-w-xl mx-auto font-light">{portfolio.subtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {portfolio.items.map((item) => {
-              const Icon = item.icon as LucideIcon;
-              return (
-                <div key={item.id} className="bg-[#4A151C] rounded-3xl overflow-hidden shadow-lg border border-white/5 flex flex-col justify-between transition-all hover:scale-[1.02] duration-300">
-                  <div className="p-6">
-                    <div className="aspect-square relative rounded-2xl overflow-hidden mb-6 group cursor-pointer">
-                      <img src={item.coverUrl} alt={item.title} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300" />
-                      <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                        <span className="inline-flex border border-[#D4AF37]/50 text-[#D4AF37] bg-white/5 text-xs px-3 py-1 rounded-full font-medium tracking-wide">{item.style}</span>
-                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#D4AF37]"><Icon className="w-4 h-4" /></div>
-                      </div>
+      {/* 3. NOVA SEÇÃO: COMPARATIVO (Design Editorial e Emocional) */}
+      <section className="py-24 px-4 bg-[#FFF9F2] relative z-10">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">{comparison.badge}</p>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#3A1015] mb-16">
+            {comparison.title} <span className="text-[#D4AF37] italic">{comparison.titleHighlight}</span>
+          </h2>
+
+          <div className="flex flex-col md:flex-row gap-8 items-stretch justify-center">
+            {/* O Lado Ruim (Presentes Comuns) - Visual apagado e efêmero */}
+            <div className="flex-1 bg-[#F5EBE1]/50 border border-[#4A151C]/5 rounded-3xl p-10 text-left opacity-80 hover:opacity-100 transition-opacity">
+              <h3 className="text-[#5A151C]/50 font-bold uppercase tracking-widest text-sm mb-8 border-b border-[#4A151C]/10 pb-4">
+                {comparison.bad.title}
+              </h3>
+              <ul className="space-y-6">
+                {comparison.bad.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-4 text-[#5A151C]/70">
+                    <X className="w-5 h-5 text-[#5A151C]/30 flex-shrink-0 mt-0.5" />
+                    <span className="font-light leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* O Lado Bom (A Música) - Visual premium, destacado e vivo */}
+            <div className="flex-1 bg-white border-2 border-[#D4AF37]/40 rounded-3xl p-10 text-left shadow-[0_0_30px_rgba(212,175,55,0.1)] relative transform md:-translate-y-4">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-[#3A1015] text-xs font-bold uppercase tracking-widest py-2 px-6 rounded-full shadow-md flex items-center gap-2">
+                <Sparkles className="w-4 h-4" /> {comparison.good.badge}
+              </div>
+              
+              <h3 className="text-[#D4AF37] font-bold uppercase tracking-widest text-sm mb-8 border-b border-[#D4AF37]/20 pb-4 mt-2">
+                {comparison.good.title}
+              </h3>
+              <ul className="space-y-6">
+                {comparison.good.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-[#D4AF37]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[#D4AF37] text-sm">✓</span>
                     </div>
-                    <h3 className="text-[#FFF9F2] text-xl font-serif font-bold mb-3">{item.title}</h3>
-                    <p className="text-[#FFF9F2]/70 text-sm leading-relaxed font-light mb-6">{item.desc}</p>
-                  </div>
-                  <div className="p-6 pt-0 mt-auto">
-                    <audio controls className="w-full h-12 rounded-full border-t border-[#FFF9F2]/5 bg-black/10 text-white audio-player">
-                      <source src={item.audioUrl} type="audio/mpeg" />
-                    </audio>
-                  </div>
-                </div>
-              );
-            })}
+                    <div>
+                      <strong className="text-[#3A1015] font-serif block text-lg">{item.title}</strong>
+                      <span className="text-[#5A151C]/70 font-light text-sm">{item.desc}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 4. COMO FUNCIONA */}
+      {/* 4. NOVA SEÇÃO: GALERIA DE VÍDEOS */}
+      <section className="bg-[#1A050A] py-24 px-4 relative z-10 border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">{videoGallery.badge}</p>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#FFF9F2] mb-6">{videoGallery.title}</h2>
+            <p className="text-[#FFF9F2]/70 text-lg max-w-2xl mx-auto font-light">{videoGallery.subtitle}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {videoGallery.items.map((item) => (
+              <div key={item.id} className="relative aspect-[9/16] rounded-2xl overflow-hidden group border border-white/10 bg-black shadow-2xl">
+                <img src={item.thumbUrl} alt={item.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                
+                {/* Play Button centralizado */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 transform group-hover:scale-110 transition-transform duration-300 cursor-pointer">
+                    <Play className="w-6 h-6 text-white ml-1" fill="white" />
+                  </div>
+                </div>
+
+                {/* Player real de vídeo escondido que sobrepõe ao interagir (pode ser ajustado) */}
+                <video controls preload="none" poster={item.thumbUrl} className="absolute inset-0 w-full h-full object-cover opacity-0 hover:opacity-100 z-10 transition-opacity duration-300">
+                  <source src={item.videoUrl} type="video/mp4" />
+                </video>
+                
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+                  <h3 className="text-white font-serif text-xl">{item.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. COMO FUNCIONA */}
       <section id="como-funciona" className="py-24 px-4 bg-[#FFF9F2] relative z-20 border-t border-[#D4AF37]/10 scroll-mt-10">
         <div className="max-w-6xl mx-auto text-center md:text-left">
           <div className="text-center mb-16">
@@ -150,18 +192,6 @@ export default function Home() {
                 <p className="text-[#5A151C]/70 relative z-10 leading-relaxed font-light">{step.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 5. VÍDEO DE REAÇÃO */}
-      <section className="bg-[#3A1015] py-24 px-4 text-center border-t border-[#2A0B0F]">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">{videoSection.badge}</p>
-          <h2 className="text-4xl md:text-5xl font-serif text-[#FFF9F2] mb-4">{videoSection.title}</h2>
-          <p className="text-[#FFF9F2]/70 text-lg mb-12 font-light">{videoSection.subtitle}</p>
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-[#4A151C] aspect-video bg-black max-w-3xl mx-auto">
-             <video controls className="w-full h-full object-cover"><source src={videoSection.videoUrl} type="video/mp4" /></video>
           </div>
         </div>
       </section>
@@ -191,8 +221,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. NOVA SEÇÃO DE PREÇOS (O DECOY EFFECT) */}
-      <section id="planos" className="py-24 px-4 bg-[#2A0B0F] text-center border-t border-[#D4AF37]/20 scroll-mt-10">
+      {/* 7. PACOTES (O DECOY EFFECT) */}
+      <section id="pacotes" className="py-24 px-4 bg-[#2A0B0F] text-center border-t border-[#D4AF37]/20 scroll-mt-10">
         <div className="max-w-6xl mx-auto">
           <p className="text-[#D4AF37] font-medium tracking-widest uppercase text-sm mb-4">— Escolha o seu pacote</p>
           <h2 className="text-4xl md:text-5xl font-serif text-[#FFF9F2] mb-16">A trilha sonora da sua história</h2>
@@ -269,7 +299,7 @@ export default function Home() {
             {finalCta.subtitle}
           </p>
           
-          <a href="#planos" className="inline-block bg-[#D4AF37] hover:bg-[#C5A028] text-[#2A0B0F] font-bold text-lg md:text-xl py-5 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+          <a href="#pacotes" className="inline-block bg-[#D4AF37] hover:bg-[#C5A028] text-[#2A0B0F] font-bold text-lg md:text-xl py-5 px-12 rounded-full transition-all duration-300 transform hover:scale-105 shadow-[0_0_30px_rgba(212,175,55,0.3)]">
             {finalCta.ctaText}
           </a>
         </div>
@@ -304,7 +334,7 @@ export default function Home() {
             <a href={contact.whatsapp} target="_blank" className="hover:text-[#D4AF37] transition-colors">WhatsApp</a>
             <a href="#como-funciona" className="hover:text-[#D4AF37] transition-colors">Como funciona</a>
             <a href="#depoimentos" className="hover:text-[#D4AF37] transition-colors">Depoimentos</a>
-            <a href="#planos" className="hover:text-[#D4AF37] transition-colors">Fazer pedido</a>
+            <a href="#pacotes" className="hover:text-[#D4AF37] transition-colors">Fazer pedido</a>
           </nav>
         </div>
         <div className="text-center text-xs text-[#FFF9F2]/30 font-light border-t border-white/10 pt-8">
