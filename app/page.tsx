@@ -297,7 +297,7 @@ export default function Home() {
           </nav>
         </div>
         <div className="text-center text-xs text-white/30 border-t border-white/10 pt-8">
-          <p>© {new Date().getFullYear()} Música de Presente. CNPJ: XX.XXX.XXX/XXXX-XX (Opcional colocar para dar confiança)</p>
+          <p>© {new Date().getFullYear()} Música de Presente. CNPJ: 47.201.562/0001-67</p>
         </div>
       </footer>
 
