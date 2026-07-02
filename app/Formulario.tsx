@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ShieldCheck, MessageCircle, Sparkles, Check, Wand2, Music, ArrowLeft, X } from 'lucide-react';
+import { ShieldCheck, MessageCircle, Sparkles, Check, Wand2, Music, ArrowLeft, X, Heart, Mic, Mic2, Dices } from 'lucide-react';
 import { siteConfig } from './config';
 
 interface FormularioProps {
@@ -9,7 +9,7 @@ interface FormularioProps {
     name: string;
     price: string;
     checkoutUrl: string;
-    features: string[]; // <-- Adicione esta linha
+    features: string[];
   };
   onClose: () => void;
 }
@@ -27,12 +27,15 @@ const estilosPopulares = [
   'Rock / Indie'
 ];
 
-const adjetivosOpcoes = [
-  'Batalhador(a)', 'Engraçado(a)', 'Carinhoso(a)', 'Teimoso(a)', 
-  'Dorminhoco(a)', 'Festeiro(a)', 'Comilão(ona)', 'Protetor(a)', 'Romântico(a)'
+const emocoesPrincipais = [
+  { label: 'Amor profundo', icon: '❤️' },
+  { label: 'Gratidão', icon: '🙏' },
+  { label: 'Saudade', icon: '🌙' },
+  { label: 'Alegria e Festa', icon: '🎉' },
+  { label: 'Força e Superação', icon: '💪' },
+  { label: 'Cumplicidade', icon: '🤝' }
 ];
 
-// Lógica de Ramificação: As ocasiões mudam de acordo com o relacionamento escolhido
 const relacionamentos = [
   'Meu Amor (Namorado/Esposo)', 
   'Minha Mãe / Meu Pai', 
@@ -55,14 +58,15 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [mostraOutro, setMostraOutro] = useState(false);
-  const [templateResumo, setTemplateResumo] = useState(0); // Guarda qual template de IA foi sorteado
+  const [templateResumo, setTemplateResumo] = useState(0); 
   
   const [formData, setFormData] = useState({
     relacao: '',
     nomeDe: '',
     nomePara: '',
     ocasiao: '',
-    adjetivos: [] as string[],
+    emocao: '',
+    voz: '',
     historia: '',
     estilo: '',
     whatsapp: ''
@@ -71,39 +75,26 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
-  // Simula a IA trabalhando e sorteia o texto
   const handleGerarResumo = () => {
     setIsGenerating(true);
-    setStep(5);
-    // Sorteia um número de 0 a 2 para escolher o texto do resumo
+    setStep(6);
     setTemplateResumo(Math.floor(Math.random() * 3));
-    
     setTimeout(() => {
       setIsGenerating(false);
     }, 2000);
   };
 
-  const toggleAdjetivo = (adj: string) => {
-    setFormData(prev => ({
-      ...prev,
-      adjetivos: prev.adjetivos.includes(adj) 
-        ? prev.adjetivos.filter(a => a !== adj)
-        : prev.adjetivos.length < 3 ? [...prev.adjetivos, adj] : prev.adjetivos
-    }));
-  };
-
-  const adjetivosFormatados = formData.adjetivos.join(', ').replace(/, ([^,]*)$/, ' e $1');
-
-  // Renderiza o resumo com base no sorteio
   const renderResumoIA = () => {
+    const vozTexto = formData.voz === 'Sem preferência' ? 'uma voz surpreendente' : `uma voz ${formData.voz.toLowerCase()}`;
+
     if (templateResumo === 0) {
       return (
         <p className="text-lg leading-relaxed text-[#4A2522]">
-          Vamos compor uma faixa <strong>{formData.estilo}</strong> perfeita para o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
+          Vamos compor um sucesso no estilo <strong>{formData.estilo}</strong> para o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
           <br/><br/>
-          A letra vai transparecer que {formData.nomePara} é uma pessoa <strong>{adjetivosFormatados}</strong>, sendo um presente inesquecível de <strong>{formData.nomeDe}</strong>. 
+          A letra vai transbordar <strong>{formData.emocao.toLowerCase()}</strong>, sendo um presente inesquecível de <strong>{formData.nomeDe}</strong> cantado por {vozTexto}. 
           <br/><br/>
-          O refrão será inspirado neste momento único: <span className="italic text-gray-600">"{formData.historia}"</span>
+          A base da nossa poesia será esta memória: <span className="italic text-gray-600">"{formData.historia}"</span>
         </p>
       );
     } else if (templateResumo === 1) {
@@ -111,19 +102,19 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
         <p className="text-lg leading-relaxed text-[#4A2522]">
           A ideia central é criar um(a) <strong>{formData.estilo}</strong> emocionante de <strong>{formData.nomeDe}</strong> para <strong>{formData.nomePara}</strong>.
           <br/><br/>
-          Para celebrar este(a) <strong>{formData.ocasiao}</strong>, a música vai destacar o lado <strong>{adjetivosFormatados}</strong> da personalidade.
+          Com {vozTexto} no microfone e focando no sentimento de <strong>{formData.emocao.toLowerCase()}</strong>, vamos celebrar este(a) <strong>{formData.ocasiao}</strong>.
           <br/><br/>
-          Vamos transformar isso em poesia: <span className="italic text-gray-600">"{formData.historia}"</span>
+          Tudo vai girar em torno desta história: <span className="italic text-gray-600">"{formData.historia}"</span>
         </p>
       );
     } else {
       return (
         <p className="text-lg leading-relaxed text-[#4A2522]">
-          Nossa estrutura inicial focará na conexão entre <strong>{formData.nomeDe}</strong> e <strong>{formData.nomePara}</strong> através de um ritmo de <strong>{formData.estilo}</strong>.
+          Nossa estrutura conectará <strong>{formData.nomeDe}</strong> e <strong>{formData.nomePara}</strong> através de um <strong>{formData.estilo}</strong> autêntico.
           <br/><br/>
-          A letra foi pensada para o(a) <strong>{formData.ocasiao}</strong>, enaltecendo características como <strong>{adjetivosFormatados}</strong>.
+          Será o(a) <strong>{formData.ocasiao}</strong> mais marcante, guiado pelo sentimento de <strong>{formData.emocao.toLowerCase()}</strong> na interpretação de {vozTexto}.
           <br/><br/>
-          A cereja do bolo será este detalhe da história: <span className="italic text-gray-600">"{formData.historia}"</span>
+          A cereja do bolo será este detalhe especial: <span className="italic text-gray-600">"{formData.historia}"</span>
         </p>
       );
     }
@@ -134,7 +125,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
       
       {/* BARRA SUPERIOR */}
       <div className="flex items-center justify-between p-6 max-w-5xl mx-auto w-full bg-white shadow-sm rounded-b-3xl">
-        {step > 1 && step < 7 && (
+        {step > 1 && step < 8 && (
           <button onClick={prevStep} className="text-[#611C24] hover:bg-[#FFF9F5] p-2 rounded-full transition-colors flex items-center gap-2 font-bold text-sm">
             <ArrowLeft className="w-5 h-5" /> Voltar
           </button>
@@ -142,7 +133,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
         
         <div className="flex-1 mx-4 max-w-md hidden md:block">
           <div className="w-full bg-gray-100 h-2.5 rounded-full overflow-hidden">
-            <div className="bg-[#E63946] h-full transition-all duration-500 ease-out" style={{ width: `${(step / 7) * 100}%` }} />
+            <div className="bg-[#E63946] h-full transition-all duration-500 ease-out" style={{ width: `${(step / 8) * 100}%` }} />
           </div>
         </div>
         
@@ -166,7 +157,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                 <button
                   key={opcao}
                   onClick={() => { 
-                    setFormData({ ...formData, relacao: opcao, ocasiao: '' }); // Reseta a ocasião ao mudar a relação
+                    setFormData({ ...formData, relacao: opcao, ocasiao: '' }); 
                     nextStep(); 
                   }}
                   className="p-5 text-center bg-white border-2 border-gray-100 rounded-2xl hover:border-[#F0C05A] hover:bg-[#FFF9F5] transition-all text-lg font-bold text-[#4A2522] shadow-sm hover:shadow-md"
@@ -178,10 +169,10 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 2: NOMES E OCASIÃO CONDICIONAL */}
+        {/* PASSO 2: NOMES E OCASIÃO */}
         {step === 2 && (
           <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 w-full max-w-xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-[#611C24]">Quais são os nomes e o motivo?</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-[#611C24]">Nomes e Motivo</h2>
             
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
@@ -210,7 +201,6 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-xl font-medium transition-all"
                 >
                   <option value="">Selecione...</option>
-                  {/* Puxa a lista de ocasiões baseada na relação escolhida no Passo 1 */}
                   {(ocasioesPorRelacao[formData.relacao] || ocasioesPorRelacao['Outra pessoa']).map((oc) => (
                     <option key={oc} value={oc}>{oc}</option>
                   ))}
@@ -227,47 +217,79 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 3: A HISTÓRIA */}
+        {/* PASSO 3: EMOÇÃO PRINCIPAL */}
         {step === 3 && (
-          <div className="animate-in slide-in-from-bottom-4 fade-in duration-500">
+          <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 w-full max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-2 text-[#611C24]">Qual a emoção principal?</h2>
+            <p className="text-gray-500 mb-8 font-medium">Isso ajuda nossa equipe a dar o tom certo para a melodia.</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {emocoesPrincipais.map((emocao) => (
+                <button
+                  key={emocao.label}
+                  onClick={() => { 
+                    setFormData({ ...formData, emocao: emocao.label }); 
+                    nextStep(); 
+                  }}
+                  className="flex items-center gap-4 p-5 bg-white border-2 border-gray-100 rounded-2xl hover:border-[#F0C05A] hover:bg-[#FFF9F5] transition-all text-lg font-bold text-[#4A2522] shadow-sm text-left"
+                >
+                  <span className="text-3xl">{emocao.icon}</span>
+                  {emocao.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* PASSO 4: A HISTÓRIA + VOZ */}
+        {step === 4 && (
+          <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 w-full max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-[#611C24]">A alma da música ❤️</h2>
             
             <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm mb-6">
-              <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 block">1. Escolha até 3 características da pessoa:</label>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {adjetivosOpcoes.map(adj => (
+              <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">1. Conte um pouco sobre vocês:</label>
+              <p className="text-xs text-[#E63946] font-bold mb-4 flex items-start gap-1">
+                <Sparkles className="w-4 h-4 flex-shrink-0 mt-0.5"/> 
+                Escreva do seu jeito! Nossa IA transforma tudo em rima. Não precisa ser um texto enorme, apenas o que não pode faltar.
+              </p>
+              <textarea
+                rows={4} placeholder="Ex: A gente viajou pra Itália no ano passado e foi inesquecível. Ela ama café, é super batalhadora e sempre me chama de 'Vida'..." 
+                value={formData.historia}
+                onChange={(e) => setFormData({ ...formData, historia: e.target.value })}
+                className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-lg transition-all resize-none mb-8"
+              />
+
+              <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 block border-t border-gray-100 pt-6">2. Preferência de Voz:</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  { label: 'Masculina', icon: <Mic className="w-5 h-5 mb-1" /> },
+                  { label: 'Feminina', icon: <Mic2 className="w-5 h-5 mb-1" /> },
+                  { label: 'Sem preferência', icon: <Dices className="w-5 h-5 mb-1" /> }
+                ].map((v) => (
                   <button 
-                    key={adj}
-                    onClick={() => toggleAdjetivo(adj)}
-                    className={`px-4 py-2 rounded-full text-sm font-bold transition-all border-2 ${formData.adjetivos.includes(adj) ? 'bg-[#F0C05A] border-[#F0C05A] text-[#4A2522]' : 'bg-transparent border-gray-200 text-gray-500 hover:border-gray-300'}`}
+                    key={v.label}
+                    onClick={() => setFormData({ ...formData, voz: v.label })}
+                    className={`flex flex-col items-center justify-center py-4 px-2 rounded-xl text-sm font-bold transition-all border-2 ${formData.voz === v.label ? 'bg-[#F0C05A]/20 border-[#F0C05A] text-[#611C24]' : 'bg-transparent border-gray-200 text-gray-500 hover:border-gray-300'}`}
                   >
-                    {formData.adjetivos.includes(adj) && "✓ "} {adj}
+                    {v.icon}
+                    {v.label}
                   </button>
                 ))}
               </div>
-
-              <label className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2 block">2. Conte uma mania, apelido ou lembrança marcante:</label>
-              <p className="text-xs text-[#E63946] font-bold mb-3 flex items-center gap-1"><Sparkles className="w-3 h-3"/> Não se preocupe em escrever bonito, nossa Inteligência Artificial arruma tudo para virar rima!</p>
-              <textarea
-                rows={4} placeholder="Ex: A gente se conheceu na escola, ele é viciado em café e sempre me chama de 'Pudim'..." 
-                value={formData.historia}
-                onChange={(e) => setFormData({ ...formData, historia: e.target.value })}
-                className="w-full bg-gray-50 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#F0C05A] text-lg transition-all resize-none"
-              />
             </div>
 
             <button 
               onClick={nextStep} 
-              disabled={!formData.historia || formData.adjetivos.length === 0} 
-              className="w-full max-w-xl mx-auto block bg-[#E63946] hover:bg-[#D90429] text-white font-bold py-4 rounded-full text-lg disabled:opacity-30 transition-all shadow-lg"
+              disabled={!formData.historia || !formData.voz} 
+              className="w-full bg-[#E63946] hover:bg-[#D90429] text-white font-bold py-4 rounded-full text-lg disabled:opacity-30 transition-all shadow-lg"
             >
               Continuar ➔
             </button>
           </div>
         )}
 
-        {/* PASSO 4: ESTILO MUSICAL */}
-        {step === 4 && (
+        {/* PASSO 5: ESTILO MUSICAL */}
+        {step === 5 && (
           <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-2 text-[#611C24]">Qual o ritmo da música? 🎸</h2>
             <p className="text-gray-500 mb-8 font-medium">Escolha o estilo favorito de quem vai receber.</p>
@@ -311,8 +333,8 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 5: O RESUMO MÁGICO DA IA */}
-        {step === 5 && (
+        {/* PASSO 6: O RESUMO MÁGICO DA IA */}
+        {step === 6 && (
           <div className="animate-in zoom-in-95 fade-in duration-500 max-w-xl mx-auto w-full text-center">
             {isGenerating ? (
               <div className="py-20 flex flex-col items-center justify-center">
@@ -330,7 +352,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                 
                 <div className="bg-white p-8 rounded-[2rem] border-2 border-[#F0C05A] shadow-lg text-left relative mb-8">
                   <div className="absolute -top-4 left-6 bg-[#F0C05A] text-[#4A2522] text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> Estrutura da Letra
+                    <Sparkles className="w-3 h-3" /> Direção Artística
                   </div>
                   
                   {renderResumoIA()}
@@ -348,8 +370,8 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 6: CONTATO WHATSAPP */}
-        {step === 6 && (
+        {/* PASSO 7: CONTATO WHATSAPP */}
+        {step === 7 && (
           <div className="animate-in slide-in-from-bottom-4 fade-in duration-500 max-w-md mx-auto text-center w-full">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-[#611C24]">Para onde enviamos? 📱</h2>
             <p className="text-gray-500 mb-8 font-medium">Digite seu WhatsApp com DDD. É por lá que enviaremos a música e o vídeo prontos.</p>
@@ -372,15 +394,14 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           </div>
         )}
 
-        {/* PASSO 7: CHECKOUT FINAL COM RESUMO E WHATSAPP */}
-        {step === 7 && (
+        {/* PASSO 8: CHECKOUT FINAL COM RESUMO E WHATSAPP */}
+        {step === 8 && (
           <div className="animate-in zoom-in-95 fade-in duration-500 text-center max-w-xl mx-auto w-full">
             <h2 className="text-4xl font-serif font-bold mb-2 text-[#611C24]">Tudo pronto! ✨</h2>
             <p className="text-gray-500 mb-6 font-medium">
               Sua estrutura já foi salva. Confira seu pacote e conclua o pagamento no ambiente seguro do Mercado Pago.
             </p>
 
-            {/* CAIXA DE RESUMO DO PEDIDO */}
             <div className="bg-white border-2 border-gray-100 rounded-3xl p-6 text-left mb-6 shadow-sm">
               <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-4">
                 <h3 className="font-bold text-[#611C24] text-lg uppercase tracking-wider">Resumo do Pedido</h3>
@@ -397,7 +418,6 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               </ul>
             </div>
 
-            {/* GARANTIA */}
             <div className="bg-[#E8F5E9] border border-[#A5D6A7] rounded-3xl p-6 flex items-start gap-4 text-left mb-8 shadow-sm">
               <div className="bg-white p-2 rounded-full text-[#2E7D32] shadow-sm flex-shrink-0 mt-1">
                 <ShieldCheck className="w-6 h-6" />
@@ -410,11 +430,10 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               </div>
             </div>
             
-            {/* BOTÃO MERCADO PAGO */}
             <button 
               onClick={() => {
                 window.open(plan.checkoutUrl, '_blank');
-                nextStep(); 
+                onClose(); 
               }}
               className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#0086C4] transition-transform transform hover:scale-105 mb-6"
             >
@@ -422,7 +441,6 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               <span className="text-xs font-medium opacity-90 tracking-wide uppercase">PIX ou Cartão de Crédito</span>
             </button>
 
-            {/* WIDGET DE WHATSAPP IN-LINE */}
             <a 
               href={siteConfig.contact.whatsapp}
               target="_blank"
@@ -432,23 +450,6 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               <MessageCircle className="w-6 h-6" />
               Ficou alguma dúvida? Fale com a gente!
             </a>
-          </div>
-        )}
-
-        {/* PASSO 8: AGUARDANDO RETORNO DO MERCADO PAGO */}
-        {step === 8 && (
-          <div className="animate-in zoom-in-95 fade-in duration-500 text-center max-w-lg mx-auto">
-            <div className="w-24 h-24 bg-[#F0C05A] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
-              <Music className="w-10 h-10 text-[#611C24]" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-[#611C24]">Pagamento em andamento...</h2>
-            <p className="text-gray-600 mb-10 text-lg leading-relaxed font-medium bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-              O Mercado Pago foi aberto para você concluir a compra. <br/><br/>
-              Assim que o PIX ou Cartão for aprovado lá, nós te chamaremos no WhatsApp <strong className="text-[#E63946]">{formData.whatsapp}</strong> para confirmar e iniciar a produção!
-            </p>
-            <button onClick={onClose} className="text-gray-500 hover:text-[#611C24] font-bold underline transition-colors">
-              Pode fechar esta janela
-            </button>
           </div>
         )}
 
