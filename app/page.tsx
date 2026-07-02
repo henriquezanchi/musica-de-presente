@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { siteConfig } from "./config";
 import Waveform from "./Waveform";
-import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart, Users, PenLine, Sparkles, BookOpen, Music } from 'lucide-react'; 
+import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart, Users, PenLine, Sparkles, BookOpen, Music, AlertCircle } from 'lucide-react'; 
 import Formulario from './Formulario';
 
 export default function Home() {
@@ -13,8 +13,16 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <main className="min-h-screen font-sans bg-[#FFF9F5] text-[#4A2522] relative pt-24 pb-20">
+    <main className="min-h-screen font-sans bg-[#FFF9F5] text-[#4A2522] relative pt-20 pb-20">
       
+      {/* BANNER PROMOCIONAL DE INAUGURAÇÃO */}
+      <div className="fixed top-0 left-0 w-full bg-[#E63946] text-white py-2.5 z-50 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2 text-xs md:text-sm font-bold uppercase tracking-wide">
+          <AlertCircle className="w-4 h-4 animate-pulse" />
+          <span>Lote de Inauguração: Primeiras músicas com até <span className="text-[#F0C05A] text-base">30% OFF</span>. Restam apenas 7 vagas!</span>
+        </div>
+      </div>
+
       {/* BOTÃO FLUTUANTE DO WHATSAPP (Sempre visível) */}
       <a 
         href={contact.whatsapp} 
@@ -30,7 +38,7 @@ export default function Home() {
       </a>
 
       {/* HEADER AMIGÁVEL */}
-      <header className="absolute top-0 left-0 w-full z-40 px-6 py-6 flex items-center justify-between max-w-7xl mx-auto right-0">
+      <header className="absolute top-10 left-0 w-full z-40 px-6 py-4 flex items-center justify-between max-w-7xl mx-auto right-0">
         <div className="text-2xl font-serif font-bold text-[#611C24] flex items-center gap-2">
            Música de Presente <Heart className="w-5 h-5 text-[#E63946] fill-[#E63946] animate-pulse" />
         </div>
@@ -44,9 +52,9 @@ export default function Home() {
       {selectedPlan && <Formulario plan={selectedPlan} onClose={() => setSelectedPlan(null)} />}
       
       {/* 1. HERO SECTION (Focada no Emocional e na Clareza) */}
-      <section className="relative w-full py-10 md:py-16 px-4 flex flex-col items-center text-center">
+      <section className="relative w-full pt-20 md:pt-28 pb-16 px-4 flex flex-col items-center text-center">
         <div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto">
-            <span className="bg-[#F0C05A]/30 text-[#611C24] text-xs font-bold uppercase tracking-wider mb-6 px-4 py-2 rounded-full inline-block">
+            <span className="bg-[#F0C05A]/30 text-[#611C24] text-xs font-bold uppercase tracking-wider mb-6 px-4 py-2 rounded-full inline-block mt-4">
                 🎉 {hero.badge}
             </span>
 
@@ -87,9 +95,12 @@ export default function Home() {
       </section>
 
       {/* 2. FAIXA COLORIDA (Separador Animado) */}
-      <div className="bg-[#E63946] text-white py-4 overflow-hidden flex whitespace-nowrap mt-8 shadow-inner">
-        <div className="animate-marquee flex gap-8 min-w-full pr-8">
-          {marquee.map((item, i) => <span key={i} className="text-sm font-bold uppercase flex items-center gap-8">{item} <span>🎵</span></span>)}
+      <div className="bg-[#E63946] text-white py-4 flex overflow-hidden whitespace-nowrap mt-8 shadow-inner border-y border-red-800">
+        <div className="animate-marquee flex gap-8 min-w-full shrink-0 items-center justify-around pr-8">
+          {marquee.map((item, i) => <span key={`linha1-${i}`} className="text-sm font-bold uppercase flex items-center gap-8">{item} <span>🎵</span></span>)}
+        </div>
+        <div className="animate-marquee flex gap-8 min-w-full shrink-0 items-center justify-around pr-8" aria-hidden="true">
+          {marquee.map((item, i) => <span key={`linha2-${i}`} className="text-sm font-bold uppercase flex items-center gap-8">{item} <span>🎵</span></span>)}
         </div>
       </div>
 
@@ -192,7 +203,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. NOVA SEÇÃO: PREVIEW DO FORMULÁRIO */}
+      {/* 6. PREVIEW DO FORMULÁRIO */}
       <section className="py-24 px-4 bg-white relative border-t border-gray-100">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-[#E63946] font-bold text-sm mb-4 uppercase">{formPreview.badge}</p>
@@ -200,7 +211,6 @@ export default function Home() {
           <p className="text-[#4A2522]/80 text-lg mb-12 max-w-2xl mx-auto">{formPreview.subtitle}</p>
 
           <div className="bg-[#FFF9F5] p-8 md:p-12 rounded-[2rem] border border-[#611C24]/10 text-left shadow-sm max-w-4xl mx-auto relative overflow-hidden">
-            {/* Decoração de fundo sutil */}
             <Music className="absolute -bottom-10 -right-10 w-48 h-48 text-[#F0C05A] opacity-10 rotate-12 pointer-events-none" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 relative z-10">
@@ -239,7 +249,6 @@ export default function Home() {
 
             </div>
 
-            {/* O quinto item centralizado */}
             <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mt-6 max-w-md mx-auto relative z-10">
                 <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><Music className="w-6 h-6" /></div>
                 <div>
@@ -248,7 +257,6 @@ export default function Home() {
                 </div>
             </div>
 
-            {/* Aviso da IA */}
             <div className="mt-8 bg-[#E8F5E9] p-5 rounded-2xl border border-[#A5D6A7] text-center flex items-center justify-center gap-3 relative z-10">
                 <Sparkles className="w-6 h-6 text-[#2E7D32]" />
                 <p className="text-[#2E7D32] font-bold text-sm md:text-base">Não se preocupe em escrever bonito! Nós organizamos tudo com rima e emoção.</p>
@@ -258,7 +266,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. PACOTES (Focado em Conversão) */}
+      {/* 7. PACOTES COM PREÇOS ANCORADOS */}
       <section id="pacotes" className="py-24 px-4 bg-[#611C24] text-center scroll-mt-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-16">Escolha o seu pacote</h2>
@@ -277,7 +285,16 @@ export default function Home() {
                   {plan.name}
                 </h3>
                 <p className={`text-sm mb-6 h-10 ${plan.highlight ? 'text-gray-500' : 'text-white/60'}`}>{plan.description}</p>
-                <div className={`text-5xl font-bold mb-8 ${plan.highlight ? 'text-[#611C24]' : 'text-white'}`}>{plan.price}</div>
+                
+                {/* PREÇO COM DESCONTO */}
+                <div className={`text-5xl font-bold mb-8 flex items-baseline gap-3 ${plan.highlight ? 'text-[#611C24]' : 'text-white'}`}>
+                  {plan.originalPrice && (
+                    <span className={`text-2xl line-through opacity-50 ${plan.highlight ? 'text-gray-400' : 'text-white/50'}`}>
+                      {plan.originalPrice}
+                    </span>
+                  )}
+                  {plan.price}
+                </div>
                 
                 <ul className="flex-1 space-y-4 mb-8">
                   {plan.features.map((feature, i) => (
@@ -347,7 +364,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. FOOTER SIMPLES E CONFIÁVEL */}
+      {/* 10. FOOTER */}
       <footer className="bg-[#4A2522] text-white pt-16 pb-12 px-6 rounded-t-[3rem] mt-10">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center gap-8 mb-10">
           <div className="text-2xl font-serif font-bold flex items-center gap-2">

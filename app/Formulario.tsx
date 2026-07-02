@@ -86,11 +86,13 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
 
   const renderResumoIA = () => {
     const vozTexto = formData.voz === 'Sem preferência' ? 'uma voz surpreendente' : `uma voz ${formData.voz.toLowerCase()}`;
+    const estiloTexto1 = formData.estilo === 'Surpresa' ? 'ritmo perfeito (escolhido por nós)' : `estilo ${formData.estilo}`;
+    const estiloTexto2 = formData.estilo === 'Surpresa' ? 'ritmo surpresa perfeito' : `autêntico ${formData.estilo}`;
 
     if (templateResumo === 0) {
       return (
         <p className="text-lg leading-relaxed text-[#4A2522]">
-          Vamos compor um sucesso no estilo <strong>{formData.estilo}</strong> para o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
+          Vamos compor um sucesso no <strong>{estiloTexto1}</strong> para o(a) <strong>{formData.ocasiao}</strong> de <strong>{formData.nomePara}</strong>. 
           <br/><br/>
           A letra vai transbordar <strong>{formData.emocao.toLowerCase()}</strong>, sendo um presente inesquecível de <strong>{formData.nomeDe}</strong> cantado por {vozTexto}. 
           <br/><br/>
@@ -100,7 +102,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
     } else if (templateResumo === 1) {
       return (
         <p className="text-lg leading-relaxed text-[#4A2522]">
-          A ideia central é criar um(a) <strong>{formData.estilo}</strong> emocionante de <strong>{formData.nomeDe}</strong> para <strong>{formData.nomePara}</strong>.
+          A ideia central é criar um <strong>{estiloTexto2}</strong> emocionante de <strong>{formData.nomeDe}</strong> para <strong>{formData.nomePara}</strong>.
           <br/><br/>
           Com {vozTexto} no microfone e focando no sentimento de <strong>{formData.emocao.toLowerCase()}</strong>, vamos celebrar este(a) <strong>{formData.ocasiao}</strong>.
           <br/><br/>
@@ -110,7 +112,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
     } else {
       return (
         <p className="text-lg leading-relaxed text-[#4A2522]">
-          Nossa estrutura conectará <strong>{formData.nomeDe}</strong> e <strong>{formData.nomePara}</strong> através de um <strong>{formData.estilo}</strong> autêntico.
+          Nossa estrutura conectará <strong>{formData.nomeDe}</strong> e <strong>{formData.nomePara}</strong> através de um <strong>{estiloTexto2}</strong>.
           <br/><br/>
           Será o(a) <strong>{formData.ocasiao}</strong> mais marcante, guiado pelo sentimento de <strong>{formData.emocao.toLowerCase()}</strong> na interpretação de {vozTexto}.
           <br/><br/>
@@ -294,7 +296,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-2 text-[#611C24]">Qual o ritmo da música? 🎸</h2>
             <p className="text-gray-500 mb-8 font-medium">Escolha o estilo favorito de quem vai receber.</p>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
               {estilosPopulares.map((opcao) => (
                 <button 
                   key={opcao} 
@@ -306,11 +308,22 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               ))}
               <button 
                 onClick={() => { setFormData({ ...formData, estilo: '' }); setMostraOutro(true); }} 
-                className={`p-4 text-center border-2 rounded-2xl transition-all text-sm md:text-base font-bold shadow-sm ${mostraOutro ? 'border-[#F0C05A] bg-[#FFF9F5] text-[#4A2522]' : 'bg-gray-50 border-gray-200 text-gray-500'}`}
+                className={`p-4 text-center border-2 rounded-2xl transition-all text-sm md:text-base font-bold shadow-sm ${mostraOutro ? 'border-[#F0C05A] bg-[#FFF9F5] text-[#4A2522]' : 'bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300'}`}
               >
                 Outro ritmo...
               </button>
             </div>
+
+            {/* BOTÃO "ME SURPREENDA" */}
+            <button 
+              onClick={() => { setFormData({ ...formData, estilo: 'Surpresa' }); setMostraOutro(false); handleGerarResumo(); }} 
+              className="w-full mb-6 p-4 flex flex-col items-center justify-center gap-1 bg-[#FFF9F5] border-2 border-[#F0C05A] rounded-2xl hover:bg-[#F0C05A]/10 transition-all shadow-sm group"
+            >
+              <div className="flex items-center gap-2 text-lg font-bold text-[#611C24]">
+                <Sparkles className="w-5 h-5 text-[#F0C05A] group-hover:animate-pulse" /> Me surpreenda!
+              </div>
+              <span className="text-sm text-[#4A2522]/70 font-medium">Deixe nossos especialistas escolherem o ritmo perfeito.</span>
+            </button>
 
             {mostraOutro && (
               <div className="animate-in slide-in-from-top-2 fade-in duration-300 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">

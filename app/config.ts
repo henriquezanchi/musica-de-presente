@@ -19,7 +19,8 @@ export const siteConfig = {
     {
       id: "essencial",
       name: "Pacote Essencial",
-      price: "R$ 99",
+      price: "R$ 79",
+      originalPrice: "R$ 99",
       description: "O presente perfeito para surpreender hoje.",
       badge: null,
       highlight: false,
@@ -33,13 +34,14 @@ export const siteConfig = {
     {
       id: "lembranca",
       name: "Pacote Lembrança",
-      price: "R$ 179",
-      description: "Suas fotos preferidas no fundo do vídeo.",
+      price: "R$ 129",
+      originalPrice: "R$ 179",
+      description: "Áudio em alta qualidade e letra animada na tela.",
       badge: null,
       highlight: false,
       features: [
-        "Música Personalizada (MP3)",
-        "Vídeo Legenda com SUAS FOTOS",
+        "Música Masterizada (WAV + MP3)",
+        "Vídeo Legenda Premium Animado",
         "Entrega em até 48 horas"
       ],
       checkoutUrl: "https://mpago.li/2kPxs2u" 
@@ -47,7 +49,8 @@ export const siteConfig = {
     {
       id: "premium",
       name: "Emoção Premium",
-      price: "R$ 199",
+      price: "R$ 149",
+      originalPrice: "R$ 199",
       description: "A experiência mais completa e inesquecível.",
       badge: "MAIS VENDIDO",
       highlight: true, 
@@ -71,7 +74,7 @@ export const siteConfig = {
     badge: "O PRESENTE MAIS EMOCIONANTE DO ANO",
     title: "A história de vocês vai virar uma música",
     subtitle: "Esqueça os presentes comuns. Emocione quem você ama com uma música exclusiva, feita com a história de vocês, entregue direto no seu WhatsApp.",
-    ctaText: "Quero criar minha música",
+    ctaText: "Quero criar minha música de presente",
     tagline: "Uma lembrança única que fica para sempre.",
   },
   
@@ -126,7 +129,6 @@ export const siteConfig = {
     ]
   },
 
-  // NOVA SEÇÃO ADICIONADA AQUI
   formPreview: {
     badge: "SEM COMPLICAÇÃO",
     title: "Como vamos saber a sua história?",
