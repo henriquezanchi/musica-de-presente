@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { siteConfig } from "./config";
 import Waveform from "./Waveform";
-import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart } from 'lucide-react'; 
+import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart, Users, PenLine, Sparkles, BookOpen, Music } from 'lucide-react'; 
 import Formulario from './Formulario';
 
 export default function Home() {
-  const { hero, marquee, comparison, videoGallery, howItWorks, portfolio, testimonials, faq, finalCta, pricingPlans, contact, trustBadges } = siteConfig;
+  const { hero, marquee, comparison, videoGallery, howItWorks, formPreview, portfolio, testimonials, faq, finalCta, pricingPlans, contact, trustBadges } = siteConfig;
   
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -24,7 +24,6 @@ export default function Home() {
         aria-label="Fale conosco no WhatsApp"
       >
         <MessageCircle className="w-8 h-8" />
-        {/* Balão explicativo que aparece ao passar o mouse (desktop) */}
         <span className="absolute right-16 bg-white text-[#4A2522] text-sm font-bold py-2 px-4 rounded-2xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
           Dúvidas? Fale com a gente!
         </span>
@@ -63,7 +62,7 @@ export default function Home() {
                 {hero.ctaText} <ChevronDown className="w-5 h-5" />
             </a>
 
-            {/* GATILHOS DE CONFIANÇA (Estilo E-commerce Forte) */}
+            {/* GATILHOS DE CONFIANÇA */}
             <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 py-8 w-full max-w-3xl bg-white rounded-3xl shadow-sm border border-[#611C24]/10">
               <div className="text-center px-4">
                 <div className="text-4xl font-bold text-[#611C24] mb-1">{trustBadges.deliveries}</div>
@@ -114,7 +113,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. GALERIA DE VÍDEOS (Estilo Feed) */}
+      {/* 4. GALERIA DE VÍDEOS */}
       <section className="bg-[#611C24] py-24 px-4 relative">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-[#F0C05A] font-bold text-sm mb-4 uppercase">{videoGallery.badge}</p>
@@ -126,7 +125,6 @@ export default function Home() {
               <div key={item.id} className="relative aspect-[9/16] bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group">
                 <img src={item.thumbUrl} alt={item.title} className="w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity" />
                 
-                {/* Play Button bem chamativo */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-20 h-20 rounded-full bg-[#E63946] flex items-center justify-center transform group-hover:scale-110 transition-all shadow-[0_0_30px_rgba(230,57,70,0.6)] cursor-pointer">
                     <Play className="w-8 h-8 text-white ml-1" fill="white" />
@@ -146,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. COMPARATIVO (O Problema e a Solução - Acolhedor) */}
+      {/* 5. COMPARATIVO */}
       <section className="py-24 px-4 bg-[#FFF9F5] relative">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#611C24] mb-12">
@@ -194,32 +192,73 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. DEPOIMENTOS */}
-      <section id="depoimentos" className="py-20 px-4 bg-white border-t border-gray-100">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-[#E63946] font-bold text-sm mb-4 uppercase">{testimonials.badge}</p>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#611C24] mb-12">{testimonials.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            {testimonials.items.map((item, index) => (
-              <div key={index} className="bg-[#FFF9F5] p-8 rounded-3xl shadow-sm border border-[#611C24]/5 flex flex-col justify-between">
+      {/* 6. NOVA SEÇÃO: PREVIEW DO FORMULÁRIO */}
+      <section className="py-24 px-4 bg-white relative border-t border-gray-100">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-[#E63946] font-bold text-sm mb-4 uppercase">{formPreview.badge}</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#611C24] mb-6">{formPreview.title}</h2>
+          <p className="text-[#4A2522]/80 text-lg mb-12 max-w-2xl mx-auto">{formPreview.subtitle}</p>
+
+          <div className="bg-[#FFF9F5] p-8 md:p-12 rounded-[2rem] border border-[#611C24]/10 text-left shadow-sm max-w-4xl mx-auto relative overflow-hidden">
+            {/* Decoração de fundo sutil */}
+            <Music className="absolute -bottom-10 -right-10 w-48 h-48 text-[#F0C05A] opacity-10 rotate-12 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 relative z-10">
+              
+              <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><Users className="w-6 h-6" /></div>
                 <div>
-                  <div className="text-[#F0C05A] text-lg mb-4">★★★★★</div>
-                  <p className="text-[#4A2522]/80 font-medium leading-relaxed mb-6">"{item.text}"</p>
-                </div>
-                <div className="flex items-center gap-4 pt-4 border-t border-[#611C24]/10">
-                  <div className="w-10 h-10 rounded-full bg-[#611C24] text-white flex items-center justify-center font-bold">{item.initials}</div>
-                  <div>
-                    <h4 className="font-bold text-[#611C24] text-sm">{item.author}</h4>
-                    <p className="text-xs text-[#E63946] font-bold">{item.occasion}</p>
-                  </div>
+                  <h4 className="font-bold text-[#611C24]">{formPreview.questions[0].title}</h4>
+                  <p className="text-[#4A2522]/70 text-sm mt-1">{formPreview.questions[0].desc}</p>
                 </div>
               </div>
-            ))}
+
+              <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><PenLine className="w-6 h-6" /></div>
+                <div>
+                  <h4 className="font-bold text-[#611C24]">{formPreview.questions[1].title}</h4>
+                  <p className="text-[#4A2522]/70 text-sm mt-1">{formPreview.questions[1].desc}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><Heart className="w-6 h-6" /></div>
+                <div>
+                  <h4 className="font-bold text-[#611C24]">{formPreview.questions[2].title}</h4>
+                  <p className="text-[#4A2522]/70 text-sm mt-1">{formPreview.questions[2].desc}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><BookOpen className="w-6 h-6" /></div>
+                <div>
+                  <h4 className="font-bold text-[#611C24]">{formPreview.questions[3].title}</h4>
+                  <p className="text-[#4A2522]/70 text-sm mt-1">{formPreview.questions[3].desc}</p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* O quinto item centralizado */}
+            <div className="flex gap-4 items-start bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mt-6 max-w-md mx-auto relative z-10">
+                <div className="bg-[#F0C05A]/20 p-3 rounded-full text-[#611C24]"><Music className="w-6 h-6" /></div>
+                <div>
+                  <h4 className="font-bold text-[#611C24]">{formPreview.questions[4].title}</h4>
+                  <p className="text-[#4A2522]/70 text-sm mt-1">{formPreview.questions[4].desc}</p>
+                </div>
+            </div>
+
+            {/* Aviso da IA */}
+            <div className="mt-8 bg-[#E8F5E9] p-5 rounded-2xl border border-[#A5D6A7] text-center flex items-center justify-center gap-3 relative z-10">
+                <Sparkles className="w-6 h-6 text-[#2E7D32]" />
+                <p className="text-[#2E7D32] font-bold text-sm md:text-base">Não se preocupe em escrever bonito! Nós organizamos tudo com rima e emoção.</p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* 7. PACOTES (Focado em Conversão e Clareza) */}
+      {/* 7. PACOTES (Focado em Conversão) */}
       <section id="pacotes" className="py-24 px-4 bg-[#611C24] text-center scroll-mt-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-16">Escolha o seu pacote</h2>
@@ -253,7 +292,7 @@ export default function Home() {
                   onClick={() => setSelectedPlan(plan)}
                   className={`w-full py-4 rounded-full font-bold uppercase text-sm transition-all shadow-md ${plan.highlight ? 'bg-[#E63946] hover:bg-[#D90429] text-white' : 'bg-white hover:bg-[#F0C05A] text-[#611C24]'}`}
                 >
-                  Comprar agora
+                  Criar minha música
                 </button>
               </div>
             ))}
@@ -261,15 +300,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. FAQ */}
-      <section className="py-20 px-4 bg-white">
+      {/* 8. DEPOIMENTOS */}
+      <section id="depoimentos" className="py-20 px-4 bg-white border-t border-gray-100">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-[#E63946] font-bold text-sm mb-4 uppercase">{testimonials.badge}</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#611C24] mb-12">{testimonials.title}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            {testimonials.items.map((item, index) => (
+              <div key={index} className="bg-[#FFF9F5] p-8 rounded-3xl shadow-sm border border-[#611C24]/5 flex flex-col justify-between">
+                <div>
+                  <div className="text-[#F0C05A] text-lg mb-4">★★★★★</div>
+                  <p className="text-[#4A2522]/80 font-medium leading-relaxed mb-6">"{item.text}"</p>
+                </div>
+                <div className="flex items-center gap-4 pt-4 border-t border-[#611C24]/10">
+                  <div className="w-10 h-10 rounded-full bg-[#611C24] text-white flex items-center justify-center font-bold">{item.initials}</div>
+                  <div>
+                    <h4 className="font-bold text-[#611C24] text-sm">{item.author}</h4>
+                    <p className="text-xs text-[#E63946] font-bold">{item.occasion}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. FAQ */}
+      <section className="py-20 px-4 bg-[#FFF9F5]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-serif font-bold text-[#611C24] mb-4">{faq.title}</h2>
           </div>
           <div className="space-y-4">
             {faq.items.map((item, idx) => (
-              <div key={idx} className="bg-[#FFF9F5] rounded-2xl overflow-hidden">
+              <div key={idx} className="bg-white rounded-2xl overflow-hidden border border-gray-100">
                 <button onClick={() => setOpenFaq(openFaq === idx ? null : idx)} className="w-full flex items-center justify-between p-6 text-left">
                   <span className="font-bold text-[#611C24]">{item.question}</span>
                   <ChevronDown className={`w-5 h-5 text-[#E63946] transition-transform duration-300 ${openFaq === idx ? 'rotate-180' : ''}`} />
@@ -283,7 +347,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. FOOTER SIMPLES E CONFIÁVEL */}
+      {/* 10. FOOTER SIMPLES E CONFIÁVEL */}
       <footer className="bg-[#4A2522] text-white pt-16 pb-12 px-6 rounded-t-[3rem] mt-10">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center gap-8 mb-10">
           <div className="text-2xl font-serif font-bold flex items-center gap-2">
@@ -297,7 +361,7 @@ export default function Home() {
           </nav>
         </div>
         <div className="text-center text-xs text-white/30 border-t border-white/10 pt-8">
-          <p>© {new Date().getFullYear()} Música de Presente. CNPJ: 47.201.562/0001-67</p>
+          <p>© {new Date().getFullYear()} Música de Presente. Todos os direitos reservados.</p>
         </div>
       </footer>
 

@@ -126,6 +126,20 @@ export const siteConfig = {
     ]
   },
 
+  // NOVA SEÇÃO ADICIONADA AQUI
+  formPreview: {
+    badge: "SEM COMPLICAÇÃO",
+    title: "Como vamos saber a sua história?",
+    subtitle: "Antes de pagar, você só precisa responder 5 perguntinhas super rápidas para guiarmos a criação da sua música:",
+    questions: [
+      { title: "Para quem é?", desc: "Pode ser mãe, namorado(a), amigo, ou até seu pet." },
+      { title: "Nomes e Apelidos", desc: "Como vocês se chamam carinhosamente." },
+      { title: "Personalidade", desc: "Escolha 3 qualidades (ex: engraçado, batalhador)." },
+      { title: "Uma Lembrança", desc: "Conte uma mania ou um momento inesquecível." },
+      { title: "O Ritmo Favorito", desc: "Sertanejo, Pop, Pagode, MPB... você escolhe!" }
+    ]
+  },
+
   portfolio: {
     title: "Músicas que já emocionaram",
     subtitle: "Ouça o estilo sertanejo, pop e acústico que criamos para outros clientes.",
