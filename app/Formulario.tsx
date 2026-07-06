@@ -72,6 +72,19 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
     whatsapp: ''
   });
 
+  const [urgencia, setUrgency] = useState('normal');
+
+  const prazos = [
+    { id: 'normal', titulo: 'Entrega Padrão', desc: 'Em até 48 horas', taxa: 0, taxaTexto: 'Grátis' },
+    { id: 'turbo', titulo: 'Entrega Turbo', desc: 'Em até 24 horas', taxa: 49, taxaTexto: '+ R$ 49' },
+    { id: 'milagre', titulo: 'Entrega Milagre', desc: 'Hoje (Até 6 horas)', taxa: 99, taxaTexto: '+ R$ 99' }
+  ];
+
+  const precoBase = parseInt(plan.price.replace(/\D/g, ''));
+  const taxaEscolhida = prazos.find(p => p.id === urgencia)?.taxa || 0;
+  const precoTotal = precoBase + taxaEscolhida;
+  const prazoEscolhidoTexto = prazos.find(p => p.id === urgencia)?.titulo || 'Entrega Padrão';
+
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
@@ -412,23 +425,47 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
           <div className="animate-in zoom-in-95 fade-in duration-500 text-center max-w-xl mx-auto w-full">
             <h2 className="text-4xl font-serif font-bold mb-2 text-[#611C24]">Tudo pronto! ✨</h2>
             <p className="text-gray-500 mb-6 font-medium">
-              Sua estrutura já foi salva. Confira seu pacote e conclua o pagamento no ambiente seguro do Mercado Pago.
+              Sua estrutura já foi salva. Escolha o prazo de entrega para enviarmos o seu pedido.
             </p>
 
-            <div className="bg-white border-2 border-gray-100 rounded-3xl p-6 text-left mb-6 shadow-sm">
-              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-4">
-                <h3 className="font-bold text-[#611C24] text-lg uppercase tracking-wider">Resumo do Pedido</h3>
-                <span className="font-bold text-2xl text-[#4A2522]">{plan.price}</span>
+            {/* SELETOR DE URGÊNCIA */}
+            <div className="mb-6 text-left">
+              <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Qual a urgência da entrega?</h4>
+              <div className="flex flex-col gap-3">
+                {prazos.map((prazo) => (
+                  <button
+                    key={prazo.id}
+                    onClick={() => setUrgency(prazo.id)}
+                    className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${urgencia === prazo.id ? 'border-[#F0C05A] bg-[#FFF9F5] shadow-sm' : 'border-gray-100 bg-white hover:border-gray-200'}`}
+                  >
+                    <div className="text-left">
+                      <div className={`font-bold ${urgencia === prazo.id ? 'text-[#611C24]' : 'text-[#4A2522]'}`}>{prazo.titulo}</div>
+                      <div className="text-sm text-gray-500 font-medium">{prazo.desc}</div>
+                    </div>
+                    <div className={`font-bold ${urgencia === prazo.id ? 'text-[#E63946]' : 'text-gray-400'}`}>
+                      {prazo.taxaTexto}
+                    </div>
+                  </button>
+                ))}
               </div>
+            </div>
+
+            {/* CAIXA DE RESUMO DO PEDIDO */}
+            <div className="bg-white border-2 border-gray-100 rounded-3xl p-6 text-left mb-6 shadow-sm">
               <div className="font-bold text-[#4A2522] text-xl mb-4">{plan.name}</div>
-              <ul className="space-y-3">
+              <ul className="space-y-3 mb-6">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3 text-[#4A2522]/80 font-medium">
+                  <li key={i} className="flex items-start gap-3 text-[#4A2522]/80 font-medium text-sm">
                     <Check className="w-5 h-5 text-[#E63946] flex-shrink-0 mt-0.5" />
                     {feature}
                   </li>
                 ))}
               </ul>
+              
+              <div className="flex justify-between items-center pt-4 border-t-2 border-gray-100">
+                <h3 className="font-bold text-[#611C24] text-xl">Total a pagar:</h3>
+                <span className="font-bold text-3xl text-[#4A2522]">R$ {precoTotal},00</span>
+              </div>
             </div>
 
             <div className="bg-[#E8F5E9] border border-[#A5D6A7] rounded-3xl p-6 flex items-start gap-4 text-left mb-8 shadow-sm">
@@ -438,31 +475,37 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               <div>
                 <h4 className="text-[#2E7D32] font-bold text-lg mb-1">Satisfação 100% Garantida</h4>
                 <p className="text-[#2E7D32]/80 text-sm leading-relaxed font-medium">
-                  Se a música não ficar exatamente do jeito que você esperava, nós fazemos uma revisão completa de graça. Seu risco é zero.
+                  Se a música não ficar do jeito que você esperava, fazemos uma revisão gratuita. Risco zero.
                 </p>
               </div>
             </div>
             
+            {/* BOTÃO QUE ABRE O WHATSAPP COM OS DADOS */}
             <button 
               onClick={() => {
-                window.open(plan.checkoutUrl, '_blank');
+                const mensagem = `*NOVO PEDIDO - MÚSICA DE PRESENTE* 🎵\n\n` +
+                  `*Pacote Escolhido:* ${plan.name}\n` +
+                  `*Prazo Escolhido:* ${prazoEscolhidoTexto}\n` +
+                  `*Total:* R$ ${precoTotal},00\n\n` +
+                  `*De:* ${formData.nomeDe}\n` +
+                  `*Para:* ${formData.nomePara}\n` +
+                  `*Relação:* ${formData.relacao}\n` +
+                  `*Ocasião:* ${formData.ocasiao}\n` +
+                  `*Emoção:* ${formData.emocao}\n` +
+                  `*Voz:* ${formData.voz}\n` +
+                  `*Estilo Musical:* ${formData.estilo}\n\n` +
+                  `*A História:* ${formData.historia}\n\n` +
+                  `Olá! Quero finalizar o pagamento do meu pedido no valor de R$ ${precoTotal},00. Podem me enviar o link?`;
+                
+                const urlWhatsapp = `https://wa.me/5562991729783?text=${encodeURIComponent(mensagem)}`;
+                window.open(urlWhatsapp, '_blank');
                 onClose(); 
               }}
-              className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#0086C4] transition-transform transform hover:scale-105 mb-6"
+              className="flex flex-col items-center justify-center w-full bg-[#25D366] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:bg-[#1EBE5D] transition-transform transform hover:scale-105 mb-6"
             >
-              <span className="font-bold text-xl mb-1">Pagar {plan.price} no Mercado Pago</span>
-              <span className="text-xs font-medium opacity-90 tracking-wide uppercase">PIX ou Cartão de Crédito</span>
+              <span className="font-bold text-xl mb-1 flex items-center gap-2"><MessageCircle className="w-6 h-6" /> Enviar história e Pagar</span>
+              <span className="text-xs font-medium opacity-90 tracking-wide uppercase">Finalizar pelo WhatsApp Seguro</span>
             </button>
-
-            <a 
-              href={siteConfig.contact.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 text-gray-500 hover:text-[#25D366] font-bold transition-colors"
-            >
-              <MessageCircle className="w-6 h-6" />
-              Ficou alguma dúvida? Fale com a gente!
-            </a>
           </div>
         )}
 

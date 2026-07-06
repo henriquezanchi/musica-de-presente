@@ -96,10 +96,10 @@ export default function Home() {
 
       {/* 2. FAIXA COLORIDA (Separador Animado) */}
       <div className="bg-[#E63946] text-white py-4 flex overflow-hidden whitespace-nowrap mt-8 shadow-inner border-y border-red-800">
-        <div className="animate-marquee flex gap-8 min-w-full shrink-0 items-center justify-around pr-8">
+        <div className="animar-faixa flex gap-8 min-w-full shrink-0 items-center justify-around pr-8">
           {marquee.map((item, i) => <span key={`linha1-${i}`} className="text-sm font-bold uppercase flex items-center gap-8">{item} <span>🎵</span></span>)}
         </div>
-        <div className="animate-marquee flex gap-8 min-w-full shrink-0 items-center justify-around pr-8" aria-hidden="true">
+        <div className="animar-faixa flex gap-8 min-w-full shrink-0 items-center justify-around pr-8" aria-hidden="true">
           {marquee.map((item, i) => <span key={`linha2-${i}`} className="text-sm font-bold uppercase flex items-center gap-8">{item} <span>🎵</span></span>)}
         </div>
       </div>
