@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { ShieldCheck, MessageCircle, Sparkles, Check, Wand2, Music, ArrowLeft, X, Heart, Mic, Mic2, Dices } from 'lucide-react';
 import { siteConfig } from './config';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 interface FormularioProps {
   plan: {
