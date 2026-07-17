@@ -74,6 +74,8 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
     whatsapp: ''
   });
 
+
+  const [isSaving, setIsSaving] = useState(false);
   const [urgencia, setUrgency] = useState('normal');
 
   const prazos = [
@@ -482,31 +484,68 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               </div>
             </div>
             
-            {/* BOTÃO QUE ABRE O WHATSAPP COM OS DADOS */}
+            {/* BOTÃO QUE SALVA NO FIREBASE E ABRE O WHATSAPP */}
             <button 
-              onClick={() => {
-                const mensagem = `*NOVO PEDIDO - MÚSICA DE PRESENTE* 🎵\n\n` +
-                  `*Pacote Escolhido:* ${plan.name}\n` +
-                  `*Prazo Escolhido:* ${prazoEscolhidoTexto}\n` +
-                  `*Total:* R$ ${precoTotal},00\n\n` +
-                  `*De:* ${formData.nomeDe}\n` +
-                  `*Para:* ${formData.nomePara}\n` +
-                  `*Relação:* ${formData.relacao}\n` +
-                  `*Ocasião:* ${formData.ocasiao}\n` +
-                  `*Emoção:* ${formData.emocao}\n` +
-                  `*Voz:* ${formData.voz}\n` +
-                  `*Estilo Musical:* ${formData.estilo}\n\n` +
-                  `*A História:* ${formData.historia}\n\n` +
-                  `Olá! Quero finalizar o pagamento do meu pedido no valor de R$ ${precoTotal},00. Podem me enviar o link?`;
+              disabled={isSaving}
+              onClick={async () => {
+                setIsSaving(true);
                 
-                const urlWhatsapp = `https://wa.me/5562991729783?text=${encodeURIComponent(mensagem)}`;
-                window.open(urlWhatsapp, '_blank');
-                onClose(); 
+                try {
+                  // 1. SALVA NO FIREBASE PRIMEIRO
+                  await addDoc(collection(db, 'pedidos'), {
+                    pacote: plan.name,
+                    precoBase: plan.price,
+                    urgenciaId: urgencia,
+                    prazo: prazoEscolhidoTexto,
+                    valorTotal: precoTotal,
+                    de: formData.nomeDe,
+                    para: formData.nomePara,
+                    relacao: formData.relacao,
+                    ocasiao: formData.ocasiao,
+                    emocao: formData.emocao,
+                    voz: formData.voz,
+                    estilo: formData.estilo,
+                    historia: formData.historia,
+                    telefoneContato: formData.whatsapp,
+                    dataCriacao: serverTimestamp(),
+                    status: 'Aguardando Pagamento'
+                  });
+
+                  // 2. MONTA A MENSAGEM DO WHATSAPP
+                  const mensagem = `*NOVO PEDIDO - MÚSICA DE PRESENTE* 🎵\n\n` +
+                    `*Pacote Escolhido:* ${plan.name}\n` +
+                    `*Prazo Escolhido:* ${prazoEscolhidoTexto}\n` +
+                    `*Total:* R$ ${precoTotal},00\n\n` +
+                    `*De:* ${formData.nomeDe}\n` +
+                    `*Para:* ${formData.nomePara}\n` +
+                    `*A História:* ${formData.historia}\n\n` +
+                    `Olá! Meu pedido já está no sistema. Quero finalizar o pagamento do valor de R$ ${precoTotal},00. Podem me enviar o link?`;
+                  
+                  // 3. ABRE O WHATSAPP
+                  const urlWhatsapp = `https://wa.me/5562991729783?text=${encodeURIComponent(mensagem)}`;
+                  window.open(urlWhatsapp, '_blank');
+                  
+                } catch (error) {
+                  console.error("Erro ao salvar no Firebase:", error);
+                  alert("Houve um pequeno erro ao processar. Por favor, tente novamente ou nos chame direto no WhatsApp.");
+                } finally {
+                  setIsSaving(false);
+                  onClose(); 
+                }
               }}
-              className="flex flex-col items-center justify-center w-full bg-[#25D366] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:bg-[#1EBE5D] transition-transform transform hover:scale-105 mb-6"
+              className="flex flex-col items-center justify-center w-full bg-[#25D366] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:bg-[#1EBE5D] transition-all transform hover:scale-105 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="font-bold text-xl mb-1 flex items-center gap-2"><MessageCircle className="w-6 h-6" /> Enviar história e Pagar</span>
-              <span className="text-xs font-medium opacity-90 tracking-wide uppercase">Finalizar pelo WhatsApp Seguro</span>
+              {isSaving ? (
+                <span className="font-bold text-xl mb-1 flex items-center gap-2">
+                  <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div> 
+                  Salvando pedido...
+                </span>
+              ) : (
+                <>
+                  <span className="font-bold text-xl mb-1 flex items-center gap-2"><MessageCircle className="w-6 h-6" /> Enviar história e Pagar</span>
+                  <span className="text-xs font-medium opacity-90 tracking-wide uppercase">Finalizar pelo WhatsApp Seguro</span>
+                </>
+              )}
             </button>
           </div>
         )}
