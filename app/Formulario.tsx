@@ -89,6 +89,28 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
   const precoTotal = precoBase + taxaEscolhida;
   const prazoEscolhidoTexto = prazos.find(p => p.id === urgencia)?.titulo || 'Entrega Padrão';
 
+  // MAPEAMENTO DOS LINKS DO MERCADO PAGO
+  const linksMercadoPago: Record<string, Record<string, string>> = {
+    "Pacote Essencial": {
+      "normal": "https://mpago.li/2e26g4p",
+      "turbo": "https://mpago.li/29fDhvo",
+      "milagre": "https://mpago.li/1UuVjKG",
+    },
+    "Pacote Lembrança": {
+      "normal": "https://mpago.li/1ouqbJ1",
+      "turbo": "https://mpago.li/2jef8Rb",
+      "milagre": "https://mpago.li/2jgeAFa",
+    },
+    "Emoção Premium": {
+      "normal": "https://mpago.li/32U1WdF",
+      "turbo": "https://mpago.li/1pXjeEC",
+      "milagre": "https://mpago.li/1Wyorjy",
+    }
+  };
+
+  // Descobre qual link usar com base no pacote e na urgência escolhida
+  const linkCheckout = linksMercadoPago[plan.name]?.[urgencia] || linksMercadoPago[plan.name]?.['normal'];
+
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
 
@@ -484,7 +506,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
               </div>
             </div>
             
-            {/* BOTÃO QUE SALVA NO FIREBASE E ABRE O WHATSAPP */}
+            {/* BOTÃO QUE SALVA NO FIREBASE E REDIRECIONA PRO MERCADO PAGO */}
             <button 
               disabled={isSaving}
               onClick={async () => {
@@ -494,10 +516,10 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                   // 1. SALVA NO FIREBASE PRIMEIRO
                   await addDoc(collection(db, 'pedidos'), {
                     pacote: plan.name,
-                    precoBase: plan.price,
                     urgenciaId: urgencia,
                     prazo: prazoEscolhidoTexto,
                     valorTotal: precoTotal,
+                    linkUtilizado: linkCheckout,
                     de: formData.nomeDe,
                     para: formData.nomePara,
                     relacao: formData.relacao,
@@ -511,39 +533,30 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
                     status: 'Aguardando Pagamento'
                   });
 
-                  // 2. MONTA A MENSAGEM DO WHATSAPP
-                  const mensagem = `*NOVO PEDIDO - MÚSICA DE PRESENTE* 🎵\n\n` +
-                    `*Pacote Escolhido:* ${plan.name}\n` +
-                    `*Prazo Escolhido:* ${prazoEscolhidoTexto}\n` +
-                    `*Total:* R$ ${precoTotal},00\n\n` +
-                    `*De:* ${formData.nomeDe}\n` +
-                    `*Para:* ${formData.nomePara}\n` +
-                    `*A História:* ${formData.historia}\n\n` +
-                    `Olá! Meu pedido já está no sistema. Quero finalizar o pagamento do valor de R$ ${precoTotal},00. Podem me enviar o link?`;
-                  
-                  // 3. ABRE O WHATSAPP
-                  const urlWhatsapp = `https://wa.me/5562991729783?text=${encodeURIComponent(mensagem)}`;
-                  window.open(urlWhatsapp, '_blank');
+                  // 2. REDIRECIONA DIRETO PARA O MERCADO PAGO
+                  window.location.href = linkCheckout;
                   
                 } catch (error) {
                   console.error("Erro ao salvar no Firebase:", error);
-                  alert("Houve um pequeno erro ao processar. Por favor, tente novamente ou nos chame direto no WhatsApp.");
-                } finally {
+                  alert("Houve um erro ao processar. Por favor, tente novamente ou nos chame no WhatsApp.");
                   setIsSaving(false);
-                  onClose(); 
-                }
+                } 
               }}
-              className="flex flex-col items-center justify-center w-full bg-[#25D366] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.3)] hover:bg-[#1EBE5D] transition-all transform hover:scale-105 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex flex-col items-center justify-center w-full bg-[#009EE3] text-white px-8 py-5 rounded-full shadow-[0_10px_30px_rgba(0,158,227,0.3)] hover:bg-[#008ACA] transition-all transform hover:scale-105 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSaving ? (
                 <span className="font-bold text-xl mb-1 flex items-center gap-2">
                   <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div> 
-                  Salvando pedido...
+                  Preparando pagamento...
                 </span>
               ) : (
                 <>
-                  <span className="font-bold text-xl mb-1 flex items-center gap-2"><MessageCircle className="w-6 h-6" /> Enviar história e Pagar</span>
-                  <span className="text-xs font-medium opacity-90 tracking-wide uppercase">Finalizar pelo WhatsApp Seguro</span>
+                  <span className="font-bold text-xl mb-1 flex items-center gap-2">
+                    <ShieldCheck className="w-6 h-6" /> Ir para Pagamento Seguro
+                  </span>
+                  <span className="text-xs font-medium opacity-90 tracking-wide uppercase">
+                    Ambiente criptografado Mercado Pago
+                  </span>
                 </>
               )}
             </button>
