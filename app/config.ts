@@ -66,10 +66,10 @@ export const siteConfig = {
   ],
 
   contact: {
-    whatsapp: "https://wa.me/5562991729783?text=Oi!%20Gostaria%20de%20tirar%20uma%20dúvida%20sobre%20a%20Música%20de%20Presente.",
+    whatsapp: "https://wa.me/551152414511?text=Oi!%20Gostaria%20de%20tirar%20uma%20dúvida%20sobre%20a%20Música%20de%20Presente.",
     instagram: "https://www.instagram.com/musica_depresente/"
   },
-
+  
   hero: {
     badge: "O PRESENTE MAIS EMOCIONANTE DO ANO",
     title: "A história de vocês vai virar uma música",
