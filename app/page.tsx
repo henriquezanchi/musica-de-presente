@@ -14,18 +14,45 @@ export default function Home() {
   
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const testarFirebase = async () => {
+  const testarFirebaseEEmail = async () => {
     try {
-      // Tenta salvar um documento na coleção "testes_inauguracao"
+      // 1. Testa o Firebase (opcional, mas bom para garantir que continua a funcionar)
       const docRef = await addDoc(collection(db, "testes_inauguracao"), {
-        mensagem: "Olá! O Firebase do Música de Presente está online!",
+        mensagem: "Teste Firebase + Email",
         data: new Date().toISOString(),
-        teste: "Sucesso absoluto"
       });
-      alert("🎉 Sucesso! Conectado ao Firebase. ID: " + docRef.id);
+      console.log("Firebase OK. ID:", docRef.id);
+
+      // 2. Dispara o E-mail de Teste
+      // Chamamos a rota que acabou de criar em /api/enviar-pedido
+      const resposta = await fetch('/api/enviar-pedido', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Enviamos dados fictícios para ver como o e-mail fica
+        body: JSON.stringify({
+          nomeRemetente: "João (Teste)",
+          nomeDestinatario: "Maria (Teste)",
+          emailCliente: "henriquecarr@gmail.com", // COLOQUE O SEU E-MAIL REAL AQUI PARA RECEBER A "CONFIRMAÇÃO DO CLIENTE"
+          ocasiao: "Aniversário",
+          historia: "Esta é uma história de teste para garantir que os e-mails estão a chegar direitinhos.",
+          plano: "Pacote Ouro",
+        }),
+      });
+
+      const resultadoEmail = await resposta.json();
+
+      if (resposta.ok) {
+        alert("🎉 Sucesso! Verifique a sua caixa de entrada (pode demorar 1 minuto).");
+      } else {
+        alert("❌ Erro ao enviar e-mail. Veja o Console (F12).");
+        console.error("Erro do Resend:", resultadoEmail);
+      }
+
     } catch (e) {
-      console.error("Erro no Firebase: ", e);
-      alert("❌ Erro ao conectar. Abra o painel (F12) e veja o Console.");
+      console.error("Erro geral no teste: ", e);
+      alert("❌ Erro crítico. Veja o Console (F12).");
     }
   };
 
@@ -43,7 +70,7 @@ export default function Home() {
       {/* BOTÃO DE TESTE TEMPORÁRIO - APAGAR DEPOIS */}
       <div className="flex justify-center pt-32 pb-4 relative z-50">
         <button 
-          onClick={testarFirebase}
+          onClick={testarFirebaseEEmail}
           className="bg-blue-600 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:bg-blue-700 animate-bounce"
         >
           🚀 CLIQUE AQUI PARA TESTAR O FIREBASE
