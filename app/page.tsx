@@ -6,12 +6,28 @@ import Waveform from "./Waveform";
 import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart, Users, PenLine, Sparkles, BookOpen, Music, AlertCircle } from 'lucide-react'; 
 import Formulario from './Formulario';
 import Image from 'next/image';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from './firebase'; // Ajuste o caminho './firebase' se o arquivo estiver em outra pasta
 
 export default function Home() {
   const { hero, marquee, comparison, videoGallery, howItWorks, formPreview, portfolio, testimonials, faq, finalCta, pricingPlans, contact, trustBadges } = siteConfig;
   
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const testarFirebase = async () => {
+    try {
+      // Tenta salvar um documento na coleção "testes_inauguracao"
+      const docRef = await addDoc(collection(db, "testes_inauguracao"), {
+        mensagem: "Olá! O Firebase do Música de Presente está online!",
+        data: new Date().toISOString(),
+        teste: "Sucesso absoluto"
+      });
+      alert("🎉 Sucesso! Conectado ao Firebase. ID: " + docRef.id);
+    } catch (e) {
+      console.error("Erro no Firebase: ", e);
+      alert("❌ Erro ao conectar. Abra o painel (F12) e veja o Console.");
+    }
+  };
 
   return (
     <main className="min-h-screen font-sans bg-[#FFF9F5] text-[#4A2522] relative pt-20 pb-20">
@@ -22,6 +38,16 @@ export default function Home() {
           <AlertCircle className="w-4 h-4 animate-pulse" />
           <span>Lote de Inauguração: Primeiras músicas com até <span className="text-[#F0C05A] text-base">30% OFF</span>. Restam apenas 7 vagas!</span>
         </div>
+      </div>
+
+      {/* BOTÃO DE TESTE TEMPORÁRIO - APAGAR DEPOIS */}
+      <div className="flex justify-center pt-32 pb-4 relative z-50">
+        <button 
+          onClick={testarFirebase}
+          className="bg-blue-600 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:bg-blue-700 animate-bounce"
+        >
+          🚀 CLIQUE AQUI PARA TESTAR O FIREBASE
+        </button>
       </div>
 
       {/* BOTÃO FLUTUANTE DO WHATSAPP (Sempre visível) */}
