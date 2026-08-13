@@ -44,8 +44,8 @@ export default function Home() {
           <Image 
             src="/logo.png" 
             alt="Música de Presente" 
-            width={200} 
-            height={40} 
+            width={600} 
+            height={120} 
             priority
             className="w-auto h-8 md:h-10" /* Isso garante que a logo seja responsiva (menor no celular) */
           />
@@ -379,8 +379,8 @@ export default function Home() {
             <Image 
               src="/logo.png" 
               alt="Música de Presente" 
-              width={200} 
-              height={40} 
+              width={400} 
+              height={80} 
               className="w-auto h-8 grayscale brightness-0 invert opacity-80" /* Deixa a logo branca para combinar com o fundo escuro do rodapé */
             />
           </div>
