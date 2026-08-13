@@ -5,6 +5,7 @@ import { siteConfig } from "./config";
 import Waveform from "./Waveform";
 import { ChevronDown, LucideIcon, X, Play, Star, Check, MessageCircle, Heart, Users, PenLine, Sparkles, BookOpen, Music, AlertCircle } from 'lucide-react'; 
 import Formulario from './Formulario';
+import Image from 'next/image';
 
 export default function Home() {
   const { hero, marquee, comparison, videoGallery, howItWorks, formPreview, portfolio, testimonials, faq, finalCta, pricingPlans, contact, trustBadges } = siteConfig;
@@ -39,8 +40,15 @@ export default function Home() {
 
       {/* HEADER AMIGÁVEL */}
       <header className="absolute top-10 left-0 w-full z-40 px-6 py-4 flex items-center justify-between max-w-7xl mx-auto right-0">
-        <div className="text-2xl font-serif font-bold text-[#611C24] flex items-center gap-2">
-           Música de Presente <Heart className="w-5 h-5 text-[#E63946] fill-[#E63946] animate-pulse" />
+        <div className="flex items-center">
+          <Image 
+            src="/logo.png" 
+            alt="Música de Presente" 
+            width={200} 
+            height={40} 
+            priority
+            className="w-auto h-8 md:h-10" /* Isso garante que a logo seja responsiva (menor no celular) */
+          />
         </div>
         <div className="flex items-center gap-4">
            <a href="#pacotes" className="bg-[#611C24] hover:bg-[#E63946] text-white text-sm font-bold py-2.5 px-6 rounded-full transition-all shadow-md">
@@ -367,8 +375,14 @@ export default function Home() {
       {/* 10. FOOTER */}
       <footer className="bg-[#4A2522] text-white pt-16 pb-12 px-6 rounded-t-[3rem] mt-10">
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center gap-8 mb-10">
-          <div className="text-2xl font-serif font-bold flex items-center gap-2">
-            Música de Presente <Heart className="w-4 h-4 text-[#F0C05A] fill-[#F0C05A]" />
+          <div className="flex items-center justify-center">
+            <Image 
+              src="/logo.png" 
+              alt="Música de Presente" 
+              width={200} 
+              height={40} 
+              className="w-auto h-8 grayscale brightness-0 invert opacity-80" /* Deixa a logo branca para combinar com o fundo escuro do rodapé */
+            />
           </div>
           <p className="text-white/60 text-sm max-w-sm">Presenteie quem você ama com uma emoção que dura para sempre.</p>
           <nav className="flex flex-wrap justify-center gap-6 text-sm font-bold text-white/80">
