@@ -44,10 +44,10 @@ export default function Home() {
           <Image 
             src="/logo.png" 
             alt="Música de Presente" 
-            width={6000} 
-            height={1200} 
+            width={400} 
+            height={80} 
             priority
-            className="w-auto h-8 md:h-10" /* Isso garante que a logo seja responsiva (menor no celular) */
+            className="w-auto h-16 md:h-24" /* Isso garante que a logo seja responsiva (menor no celular) */
           />
         </div>
         <div className="flex items-center gap-4">
@@ -379,9 +379,9 @@ export default function Home() {
             <Image 
               src="/logo.png" 
               alt="Música de Presente" 
-              width={2000} 
-              height={400} 
-              className="w-auto h-8 grayscale brightness-0 invert opacity-80" /* Deixa a logo branca para combinar com o fundo escuro do rodapé */
+              width={400} 
+              height={80} 
+              className="w-auto h-16 grayscale brightness-0 invert opacity-80" /* Deixa a logo branca para combinar com o fundo escuro do rodapé */
             />
           </div>
           <p className="text-white/60 text-sm max-w-sm">Presenteie quem você ama com uma emoção que dura para sempre.</p>
