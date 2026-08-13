@@ -37,10 +37,10 @@ export async function POST(request: Request) {
           <h2 style="color: #611C24;">Olá, ${dados.nomeRemetente}!</h2>
           <p>Que incrível a história que você nos contou sobre a sua relação com <strong>${dados.nomeDestinatario}</strong>.</p>
           <p>Este e-mail é apenas para confirmar que o seu pedido para a ocasião <strong>"${dados.ocasiao}"</strong> foi recebido com sucesso no nosso sistema.</p>
-          <p>A nossa equipa já está a analisar os detalhes para transformar a vossa história numa emoção que dura para sempre.</p>
-          <p>Se tiver alguma dúvida, basta responder a este e-mail ou falar connosco no WhatsApp.</p>
+          <p>A nossa equipe já está analisando os detalhes para transformar a sua história numa emoção que dura para sempre.</p>
+          <p>Se tiver alguma dúvida, basta responder a este e-mail ou falar conosco no WhatsApp: (11) 5241 4511.</p>
           <br/>
-          <p>Com carinho,<br/>Equipa Música de Presente ❤️</p>
+          <p>Com carinho,<br/>Equipe Música de Presente ❤️</p>
         </div>
       `,
     });
