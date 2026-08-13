@@ -67,16 +67,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* BOTÃO DE TESTE TEMPORÁRIO - APAGAR DEPOIS */}
-      <div className="flex justify-center pt-32 pb-4 relative z-50">
-        <button 
-          onClick={testarFirebaseEEmail}
-          className="bg-blue-600 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:bg-blue-700 animate-bounce"
-        >
-          🚀 CLIQUE AQUI PARA TESTAR O FIREBASE e EMAIL
-        </button>
-      </div>
-
       {/* BOTÃO FLUTUANTE DO WHATSAPP (Sempre visível) */}
       <a 
         href={contact.whatsapp} 
