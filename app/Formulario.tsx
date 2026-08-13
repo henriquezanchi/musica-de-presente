@@ -81,7 +81,7 @@ export default function Formulario({ plan, onClose }: FormularioProps) {
   const prazos = [
     { id: 'normal', titulo: 'Entrega Padrão', desc: 'Em até 48 horas', taxa: 0, taxaTexto: 'Grátis' },
     { id: 'turbo', titulo: 'Entrega Turbo', desc: 'Em até 24 horas', taxa: 49, taxaTexto: '+ R$ 49' },
-    { id: 'milagre', titulo: 'Entrega Milagre', desc: 'Hoje (Até 6 horas)', taxa: 99, taxaTexto: '+ R$ 99' }
+    { id: 'milagre', titulo: 'Entrega Milagre', desc: 'Hoje (Até 6 horas - Sujeito a disponibilidade)', taxa: 99, taxaTexto: '+ R$ 99' }
   ];
 
   const precoBase = parseInt(plan.price.replace(/\D/g, ''));
